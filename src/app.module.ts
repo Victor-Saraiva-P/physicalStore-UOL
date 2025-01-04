@@ -3,11 +3,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
+import { StoreModule } from './store/store.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGO_URI), // conexão com o banco de dados mongoDB
+    MongooseModule.forRoot(process.env.MONGO_URI),
+    StoreModule, // conexão com o banco de dados mongoDB
   ],
   controllers: [AppController],
   providers: [AppService],
