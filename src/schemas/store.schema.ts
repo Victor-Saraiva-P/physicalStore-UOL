@@ -7,9 +7,6 @@ export type StoreDocument = Store & Document;
 @Schema()
 export class Store {
   @Prop()
-  storeID: string;
-
-  @Prop()
   storeName: string;
 
   @Prop({ default: true })
