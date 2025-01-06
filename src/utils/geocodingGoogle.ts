@@ -11,15 +11,14 @@ interface GoogleGeocodeResponse {
   }[];
 }
 
-export const obterCoordenadasPorEndereco = async (
-  logradouro: string,
-  bairro: string,
-  cidade: string,
-  estado: string,
-  numero?: string,
+export const getCoordenadasPorEndereco = async (
+  address: string,
+  district: string,
+  city: string,
+  state: string,
 ) => {
-  const enderecoCompleto = `${logradouro}, ${numero}, ${bairro}, ${cidade}, ${estado}`;
-  
+  const enderecoCompleto = `${address}, ${district}, ${city}, ${state}`;
+
   const { data } = await axios.get<GoogleGeocodeResponse>(
     'https://maps.googleapis.com/maps/api/geocode/json',
     {

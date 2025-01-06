@@ -11,18 +11,22 @@ interface Endereco {
 }
 
 // Função para obter dados de endereço pelo CEP usando a API ViaCEP
-export const obterEnderecoViaCep = async (cep: string) => {
+export const getEnderecoViaPostalCode = async (postalCode: string) => {
   const response = await axios.get<Endereco>(
-    `https://viacep.com.br/ws/${cep}/json/`,
+    `https://viacep.com.br/ws/${postalCode}/json/`,
   );
 
-  const { logradouro, bairro, localidade: cidade, uf: estado } = response.data;
+  const {
+    logradouro: address,
+    bairro: district,
+    localidade: city,
+    uf: state,
+  } = response.data;
 
   return {
-    logradouro,
-    bairro,
-    cidade,
-    estado,
-    cep,
+    address,
+    district,
+    city,
+    state,
   };
 };
