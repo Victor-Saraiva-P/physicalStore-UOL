@@ -22,7 +22,7 @@ export class Store {
   longitude: string;
 
   @Prop()
-  address1: string;
+  address: string;
 
   @Prop()
   address2: string;
@@ -42,7 +42,7 @@ export class Store {
   @Prop({ enum: ['PDV', 'LOJA'] })
   type: string;
 
-  @Prop()
+  @Prop({ default: 'Brasil' })
   country: string;
 
   @Prop()
