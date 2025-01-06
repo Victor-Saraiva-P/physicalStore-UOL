@@ -31,7 +31,7 @@ export class StoreService {
       city,
       state,
       latitude,
-      longitude
+      longitude,
     });
 
     return createdStore.save();
