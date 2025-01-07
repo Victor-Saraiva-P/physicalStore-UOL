@@ -5,14 +5,17 @@ import { UpdateStoreDto } from './dtos/update-store.dto';
 import { Body } from '@nestjs/common';
 import { Param } from '@nestjs/common';
 import { Patch } from '@nestjs/common';
-import { StoreListResponse } from 'src/interfaces/store.interface';
+import {
+  StoreListResponse,
+  StoreResponse,
+} from 'src/interfaces/store.interface';
 
 @Controller('store')
 export class StoreController {
   constructor(private readonly storeService: StoreService) {}
 
   @Post()
-  async create(@Body() createStoreDto: CreateStoreDto) {
+  async create(@Body() createStoreDto: CreateStoreDto): Promise<StoreResponse> {
     const store = await this.storeService.create(createStoreDto);
     return {
       message: 'Store Criada com sucesso',
@@ -24,7 +27,7 @@ export class StoreController {
   async update(
     @Param('id') id: string,
     @Body() updateStoreDto: UpdateStoreDto,
-  ) {
+  ): Promise<StoreResponse> {
     const store = await this.storeService.update(id, updateStoreDto);
     return {
       message: 'Store Atualizada com sucesso',
@@ -33,7 +36,7 @@ export class StoreController {
   }
 
   @Delete('/:id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string): Promise<{ message: string }> {
     await this.storeService.remove(id);
     return {
       message: 'Store Removida com sucesso',

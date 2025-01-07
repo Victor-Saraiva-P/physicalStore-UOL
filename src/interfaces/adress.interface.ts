@@ -6,11 +6,9 @@ export interface BasicAdress {
   postalCode: string;
 }
 
-
 export interface Coordinates {
   latitude: number;
   longitude: number;
 }
-
 
 export interface CompleteAdress extends BasicAdress, Coordinates {}
