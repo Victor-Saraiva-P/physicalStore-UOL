@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { CreateStoreDto } from './dtos/create-store.dto';
 import { getCompleteAddressByZipCode } from '../utils/address.utils';
 import { CompleteAdress } from 'src/types/utilsTypes/CompleteAddress.type';
+import { StoreListResponse } from 'src/types/basicTypes/store.type';
 import { UpdateStoreDto } from './dtos/update-store.dto';
 
 @Injectable()
@@ -25,7 +26,10 @@ export class StoreService {
     return createdStore.save();
   }
 
-  async update(id: string,updateStoreDto: UpdateStoreDto): Promise<StoreDocument> {
+  async update(
+    id: string,
+    updateStoreDto: UpdateStoreDto,
+  ): Promise<StoreDocument> {
     const existingStore = await this.storeModel.findById(id);
 
     if (updateStoreDto.postalCode) {
@@ -44,5 +48,22 @@ export class StoreService {
 
   async remove(id: string): Promise<void> {
     const result = await this.storeModel.findByIdAndDelete(id);
+  }
+
+  async listAll(limit: number, offset: number): Promise<StoreListResponse> {
+    const stores = await this.storeModel
+      .find()
+      .skip(offset)
+      .limit(limit)
+      .exec();
+
+    const total = await this.storeModel.countDocuments();
+
+    return {
+      stores,
+      limit,
+      offset,
+      total,
+    };
   }
 }

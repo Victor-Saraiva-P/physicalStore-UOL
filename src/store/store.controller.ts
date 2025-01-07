@@ -1,10 +1,11 @@
-import { Controller, Delete, Post } from '@nestjs/common';
+import { Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { StoreService } from './store.service';
 import { CreateStoreDto } from './dtos/create-store.dto';
 import { UpdateStoreDto } from './dtos/update-store.dto';
 import { Body } from '@nestjs/common';
 import { Param } from '@nestjs/common';
 import { Patch } from '@nestjs/common';
+import { StoreListResponse } from 'src/types/basicTypes/store.type';
 
 @Controller('store')
 export class StoreController {
@@ -37,5 +38,13 @@ export class StoreController {
     return {
       message: 'Store Removida com sucesso',
     };
+  }
+
+  @Get('listAll')
+  async listAll(
+    @Query('limit') limit: number = 10,
+    @Query('offset') offset: number = 0,
+  ): Promise<StoreListResponse> {
+    return this.storeService.listAll(Number(limit), Number(offset));
   }
 }
