@@ -1,6 +1,6 @@
 import { getAdressByPostalCode } from 'src/apis/viaCep';
 import { getCoordinatesByAddress } from 'src/apis/geocodingGoogle';
-import { Coordinates } from 'src/types/basicTypes/Coordinates.type';
+import { Coordinates } from 'src/types/basicTypes/Coordinates.interface';
 import { CompleteAdress } from 'src/types/utilsTypes/CompleteAddress.type';
 
 export const getCompleteAddressByZipCode = async (postalCode: string) => {

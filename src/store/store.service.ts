@@ -4,8 +4,8 @@ import { StoreDocument } from '../schemas/store.schema';
 import { Model } from 'mongoose';
 import { CreateStoreDto } from './dtos/create-store.dto';
 import { getCompleteAddressByZipCode } from '../utils/address.utils';
-import { CompleteAdress } from 'src/types/utilsTypes/CompleteAddress.type';
-import { StoreListResponse } from 'src/types/basicTypes/store.type';
+import { CompleteAdress } from 'src/interfaces/adress.interface';
+import { StoreListResponse } from 'src/interfaces/store.interface';
 import { UpdateStoreDto } from './dtos/update-store.dto';
 
 @Injectable()

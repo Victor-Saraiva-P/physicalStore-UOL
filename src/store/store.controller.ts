@@ -5,7 +5,7 @@ import { UpdateStoreDto } from './dtos/update-store.dto';
 import { Body } from '@nestjs/common';
 import { Param } from '@nestjs/common';
 import { Patch } from '@nestjs/common';
-import { StoreListResponse } from 'src/types/basicTypes/store.type';
+import { StoreListResponse } from 'src/interfaces/store.interface';
 
 @Controller('store')
 export class StoreController {

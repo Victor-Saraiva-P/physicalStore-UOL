@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { ViaCepAddress } from '../types/apisTypes/ViaCepAddress.type';
-import { BasicAdress } from 'src/types/basicTypes/BasicAddress.type';
+import { ViaCepAddress } from '../interfaces/viaCepAddress.interface';
+import { BasicAdress } from 'src/types/basicTypes/BasicAddress.interface';
 
 export const getAdressByPostalCode = async (postalCode: string) => {
   const response = await axios.get<ViaCepAddress>(

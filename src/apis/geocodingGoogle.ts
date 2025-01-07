@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { GoogleGeocodeResponse } from '../types/apisTypes/GoogleGeocodeResponse.type';
-import { BasicAdress } from 'src/types/basicTypes/BasicAddress.type';
-import { Coordinates } from 'src/types/basicTypes/Coordinates.type';
+import { GoogleGeocodeResponse } from '../interfaces/google.interface';
+import { BasicAdress } from 'src/types/basicTypes/BasicAddress.interface';
+import { Coordinates } from 'src/types/basicTypes/Coordinates.interface';
 
 export const getCoordinatesByAddress = async (basicAdress: BasicAdress) => {
   const enderecoCompleto = Object.values(basicAdress).join(', ');
