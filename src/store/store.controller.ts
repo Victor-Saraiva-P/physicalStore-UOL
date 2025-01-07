@@ -62,7 +62,11 @@ export class StoreController {
   }
 
   @Get(':id')
-  async getStoreById(@Param('id') id: string): Promise<StoreDocument> {
-    return this.storeService.storeById(id);
+  async getStoreById(@Param('id') id: string): Promise<StoreResponse> {
+    const store = await this.storeService.storeById(id);
+    return {
+      message: 'Store Encontrada com sucesso',
+      store,
+    };
   }
 }
