@@ -66,4 +66,10 @@ export class StoreService {
       total,
     };
   }
+
+  async storeById(storeId: string): Promise<StoreDocument> {
+    const store = await this.storeModel.findById(storeId).lean().exec();
+
+    return store;
+  }
 }

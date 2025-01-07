@@ -9,6 +9,7 @@ import {
   StoreListResponse,
   StoreResponse,
 } from 'src/interfaces/store.interface';
+import { StoreDocument } from 'src/schemas/store.schema';
 
 @Controller('store')
 export class StoreController {
@@ -49,5 +50,10 @@ export class StoreController {
     @Query('offset') offset: number = 0,
   ): Promise<StoreListResponse> {
     return this.storeService.listAll(Number(limit), Number(offset));
+  }
+
+  @Get(':id')
+  async getStoreById(@Param('id') id: string): Promise<StoreDocument> {
+    return this.storeService.storeById(id);
   }
 }
