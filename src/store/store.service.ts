@@ -42,4 +42,7 @@ export class StoreService {
     return this.storeModel.findByIdAndUpdate(id, updateStoreDto, { new: true });
   }
 
+  async remove(id: string): Promise<void> {
+    const result = await this.storeModel.findByIdAndDelete(id);
+  }
 }

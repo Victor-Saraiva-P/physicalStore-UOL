@@ -31,4 +31,11 @@ export class StoreController {
     };
   }
 
+  @Delete('/:id')
+  async remove(@Param('id') id: string) {
+    await this.storeService.remove(id);
+    return {
+      message: 'Store Removida com sucesso',
+    };
+  }
 }
