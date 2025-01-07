@@ -59,12 +59,37 @@ export class StoreService {
 
     const total = await this.storeModel.countDocuments();
 
-    return {
+    const storeListResponse: StoreListResponse = {
       stores,
       limit,
       offset,
       total,
     };
+
+    return storeListResponse;
+  }
+
+  async storeByState(
+    state: string,
+    limit: number,
+    offset: number,
+  ): Promise<StoreListResponse> {
+    const stores = await this.storeModel
+      .find({ state })
+      .skip(offset)
+      .limit(limit)
+      .exec();
+
+    const total = await this.storeModel.countDocuments({ state }); // Conta o total de lojas no estado
+
+    const storeListResponse: StoreListResponse = {
+      stores,
+      limit,
+      offset,
+      total,
+    };
+
+    return storeListResponse;
   }
 
   async storeById(storeId: string): Promise<StoreDocument> {

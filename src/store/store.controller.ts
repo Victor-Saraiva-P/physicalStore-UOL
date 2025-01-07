@@ -9,7 +9,7 @@ import {
   StoreListResponse,
   StoreResponse,
 } from 'src/interfaces/store.interface';
-import { StoreDocument } from 'src/schemas/store.schema';
+import { Store, StoreDocument } from 'src/schemas/store.schema';
 
 @Controller('store')
 export class StoreController {
@@ -50,6 +50,15 @@ export class StoreController {
     @Query('offset') offset: number = 0,
   ): Promise<StoreListResponse> {
     return this.storeService.listAll(Number(limit), Number(offset));
+  }
+
+  @Get('state/:state')
+  async getStoresByState(
+    @Param('state') state: string,
+    @Query('limit') limit: number = 10,
+    @Query('offset') offset: number = 0,
+  ): Promise<StoreListResponse> {
+    return this.storeService.storeByState(state, Number(limit), Number(offset));
   }
 
   @Get(':id')
