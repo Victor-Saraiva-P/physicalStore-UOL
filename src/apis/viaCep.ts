@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { ViaCepAddress } from '../interfaces/viaCepAddress.interface';
-import { BasicAdress } from 'src/types/basicTypes/BasicAddress.interface';
+import { ViaCepResponse } from '../interfaces/viaCep.interface';
+import { BasicAdress } from 'src/interfaces/adress.interface';
 
 export const getAdressByPostalCode = async (postalCode: string) => {
-  const response = await axios.get<ViaCepAddress>(
+  const response = await axios.get<ViaCepResponse>(
     `https://viacep.com.br/ws/${postalCode}/json/`,
   );
 
