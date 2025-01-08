@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Double } from 'mongoose';
 
 // Define o tipo para documentos de loja
 export type StoreDocument = Store & Document;
@@ -16,10 +16,10 @@ export class Store {
   shippingTimeInDays: number;
 
   @Prop()
-  latitude: string;
+  latitude: number;
 
   @Prop()
-  longitude: string;
+  longitude: number;
 
   @Prop()
   address: string;

@@ -2,8 +2,8 @@ export interface Store {
   storeName: string;
   takeOutInStore: boolean;
   shippingTimeInDays: number;
-  latitude: string;
-  longitude: string;
+  latitude: number;
+  longitude: number;
   address: string;
   address2: string;
   address3: string;
