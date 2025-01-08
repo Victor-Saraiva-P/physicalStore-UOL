@@ -6,10 +6,10 @@ import { Body } from '@nestjs/common';
 import { Param } from '@nestjs/common';
 import { Patch } from '@nestjs/common';
 import {
+  StoreByCepListResponse,
   StoreListResponse,
   StoreResponse,
 } from 'src/interfaces/store.interface';
-import { Store, StoreDocument } from 'src/schemas/store.schema';
 
 @Controller('store')
 export class StoreController {
@@ -68,5 +68,15 @@ export class StoreController {
       message: 'Store Encontrada com sucesso',
       store,
     };
+  }
+
+  @Get('by-cep/:cep')
+  async getStoresByCep(
+    @Param('cep') cep: string,
+    @Query('limit') limit: number = 10,
+    @Query('offset') offset: number = 0,
+  ): // adicionar tipo de de response
+  Promise<StoreByCepListResponse> {
+    return this.storeService.storeByCep(cep, Number(limit), Number(offset));
   }
 }
