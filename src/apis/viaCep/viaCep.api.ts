@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { ViaCepAddress } from '../types/apisTypes/ViaCepAddress.type';
-import { BasicAdress } from 'src/types/basicTypes/BasicAddress.type';
+import { ViaCepResponse } from '../../interfaces/viaCep.interface';
+import { BasicAdress } from 'src/interfaces/adress.interface';
 
 export const getAdressByPostalCode = async (postalCode: string) => {
-  const response = await axios.get<ViaCepAddress>(
+  const response = await axios.get<ViaCepResponse>(
     `https://viacep.com.br/ws/${postalCode}/json/`,
   );
 
@@ -12,7 +12,6 @@ export const getAdressByPostalCode = async (postalCode: string) => {
     district: response.data.bairro,
     city: response.data.localidade,
     state: response.data.uf,
-    postalCode: response.data.cep,
   };
 
   return basicAdress;

@@ -1,9 +1,11 @@
 import axios from 'axios';
-import { GoogleGeocodeResponse } from '../types/apisTypes/GoogleGeocodeResponse.type';
-import { BasicAdress } from 'src/types/basicTypes/BasicAddress.type';
-import { Coordinates } from 'src/types/basicTypes/Coordinates.type';
+import { GoogleGeocodeResponse } from '../../interfaces/google.interface';
+import { BasicAdress, Coordinates } from 'src/interfaces/adress.interface';
 
-export const getCoordinatesByAddress = async (basicAdress: BasicAdress) => {
+export const getCoordinatesByAddress = async (
+  // Usei o BasicAdress ao inves de só o cep, porque deixa o googleGeocode mais acertivo por não depender só do cep
+  basicAdress: BasicAdress,
+) => {
   const enderecoCompleto = Object.values(basicAdress).join(', ');
 
   const { data } = await axios.get<GoogleGeocodeResponse>(
