@@ -1,5 +1,5 @@
-import { getAdressByPostalCode } from 'src/apis/viaCep';
-import { getCoordinatesByAddress } from 'src/apis/geocodingGoogle';
+import { getAdressByPostalCode } from 'src/apis/viaCep/viaCep.api';
+import { getCoordinatesByAddress } from 'src/apis/google/geocode.api';
 import { CompleteAdress, Coordinates } from 'src/interfaces/adress.interface';
 
 export const getCompleteAddressByZipCode = async (postalCode: string) => {
