@@ -3,10 +3,9 @@ export interface BasicAdress {
   district: string;
   city: string;
   state: string;
-  postalCode: string;
 }
 
-export interface Coordinates {
+export class Coordinates {
   latitude: number;
   longitude: number;
 }
