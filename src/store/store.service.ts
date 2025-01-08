@@ -128,7 +128,7 @@ export class StoreService {
       .filter(
         (store) =>
           // Filtra os PDV que estão muito longe e as que não fazem entrega
-          !(store.type === 'PDV' && store.distance > 50) &&
+          !(store.type === 'PDV' && store.distance > 50) ||
           store.takeOutInStore !== false,
       )
       .sort((a, b) => a.distance - b.distance);
