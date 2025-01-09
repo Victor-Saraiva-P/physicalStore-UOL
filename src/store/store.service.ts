@@ -6,13 +6,14 @@ import { CreateStoreDto } from './dtos/create-store.dto';
 import { getCompleteAddressByZipCode } from '../utils/address.util';
 import { CompleteAdress, Coordinates } from 'src/interfaces/adress.interface';
 import {
-  Response2,
   Response1,
+  Response2,
 } from 'src/store/storeInterfaces/storeResponses.interface';
 import { UpdateStoreDto } from './dtos/update-store.dto';
 import { mapStoresWithDistances } from 'src/utils/storesDistanceMapper.util';
 import { calcularPrecoPrazo } from 'src/apis/correios/precosPrazos.api';
 import { Store1ComDistanceValue } from 'src/store/storeInterfaces/store1.interface';
+import { Store2, MotoboyEntrega } from './storeInterfaces/store2.interface';
 
 @Injectable()
 export class StoreService {
@@ -163,7 +164,7 @@ export class StoreService {
     );
 
     // Formata lojas para resposta simplificada
-    const storeSimplificadaByCep = enrichedStores.map((store) => ({
+    const storeSimplificadaByCep: Store2[] = enrichedStores.map((store) => ({
       name: store.storeName,
       city: store.city,
       postalCode: store.postalCode,
@@ -196,9 +197,9 @@ export class StoreService {
       // Entrega por motoboy
       store.value = [
         {
-          prazo: '1 dias úteis',
-          price: 'R$ 15,00',
-          description: 'Motoboy',
+          prazo: MotoboyEntrega.prazo,
+          price: MotoboyEntrega.price,
+          description: MotoboyEntrega.description,
         },
       ];
     } else if (store.type === 'LOJA' && store.distance > 50) {

@@ -13,3 +13,10 @@ export interface DeliveryValue {
   price: string;
   description: string;
 }
+
+// classe static para entrega de motoboy
+export abstract class MotoboyEntrega {
+  static prazo = '1 dias úteis';
+  static price = 'R$ 15,00';
+  static description = 'Motoboy';
+}
