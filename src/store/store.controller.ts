@@ -62,12 +62,12 @@ export class StoreController {
   }
 
   @Get(':id')
-  async getStoreById(@Param('id') id: string): Promise<ResponseCrud> {
-    const store = await this.storeService.storeById(id);
-    return {
-      message: 'Store Encontrada com sucesso',
-      store,
-    };
+  async getStoreById(
+    @Param('id') id: string,
+    @Query('limit') limit: number = 1,
+    @Query('offset') offset: number = 0,
+  ): Promise<Response1> {
+    return this.storeService.storeById(id, Number(limit), Number(offset));
   }
 
   @Get('by-cep/:cep')

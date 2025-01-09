@@ -103,10 +103,28 @@ export class StoreService {
     return storeListResponse;
   }
 
-  async storeById(storeId: string): Promise<StoreDocument> {
-    const store = await this.storeModel.findById(storeId).lean().exec();
+  async storeById(
+    storeId: string,
+    limit: number,
+    offset: number,
+  ): Promise<Response1> {
+    const stores = await this.storeModel
+      .find({ _id: storeId })
+      .skip(offset)
+      .limit(limit)
+      .lean()
+      .exec();
 
-    return store;
+    const total = await this.storeModel.countDocuments({ _id: storeId });
+
+    const storeListResponse: Response1 = {
+      stores,
+      limit,
+      offset,
+      total,
+    };
+
+    return storeListResponse;
   }
 
   async storeByCep(
