@@ -121,7 +121,12 @@ export class StoreService {
         longitude: completeAddress.longitude,
       }),
     );
-    const stores = await this.storeModel.find().lean().skip(offset).limit(limit).exec();
+    const stores = await this.storeModel
+      .find()
+      .lean()
+      .skip(offset)
+      .limit(limit)
+      .exec();
 
     // Adiciona distâncias e filtra lojas
     const storesWithDistances = (await mapStoresWithDistances(origin, stores))
