@@ -5,7 +5,7 @@ export interface BasicAdress {
   state: string;
 }
 
-export class Coordinates {
+export interface Coordinates {
   latitude: number;
   longitude: number;
 }

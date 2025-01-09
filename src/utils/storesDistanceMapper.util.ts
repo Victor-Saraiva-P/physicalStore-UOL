@@ -1,14 +1,14 @@
 import { calculateDistances } from '../apis/google/calculateDistances.api';
 import { Coordinates } from '../interfaces/adress.interface';
 import {
-  StoreComDistanceList,
-  StoreList,
-} from 'src/interfaces/store.interface';
+  Store1ComDistance,
+  Store1,
+} from 'src/store/storeInterfaces/store1.interface';
 
 export async function mapStoresWithDistances(
   origin: Coordinates,
-  stores: StoreList,
-): Promise<StoreComDistanceList> {
+  stores: Store1[],
+): Promise<Store1ComDistance[]> {
   const distances = await calculateDistances(origin, stores);
 
   // Verifica se o número de distâncias corresponde ao número de lojas

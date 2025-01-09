@@ -6,14 +6,14 @@ import { CreateStoreDto } from './dtos/create-store.dto';
 import { getCompleteAddressByZipCode } from '../utils/address.util';
 import { CompleteAdress, Coordinates } from 'src/interfaces/adress.interface';
 import {
-  StoreByCepListResponse,
-  StoreComDistanceValue,
-  StoreComDistanceValueList,
-  StoreListResponse,
-} from 'src/interfaces/store.interface';
+  Response1,
+  Response2,
+} from 'src/store/storeInterfaces/storeResponses.interface';
 import { UpdateStoreDto } from './dtos/update-store.dto';
 import { mapStoresWithDistances } from 'src/utils/storesDistanceMapper.util';
 import { calcularPrecoPrazo } from 'src/apis/correios/precosPrazos.api';
+import { Store1ComDistanceValue } from 'src/store/storeInterfaces/store1.interface';
+import { Store2, MotoboyEntrega } from './storeInterfaces/store2.interface';
 
 @Injectable()
 export class StoreService {
@@ -60,7 +60,7 @@ export class StoreService {
     const result = await this.storeModel.findByIdAndDelete(id);
   }
 
-  async listAll(limit: number, offset: number): Promise<StoreListResponse> {
+  async listAll(limit: number, offset: number): Promise<Response1> {
     const stores = await this.storeModel
       .find()
       .skip(offset)
@@ -70,7 +70,7 @@ export class StoreService {
 
     const total = await this.storeModel.countDocuments();
 
-    const storeListResponse: StoreListResponse = {
+    const storeListResponse: Response1 = {
       stores,
       limit,
       offset,
@@ -84,7 +84,7 @@ export class StoreService {
     state: string,
     limit: number,
     offset: number,
-  ): Promise<StoreListResponse> {
+  ): Promise<Response1> {
     const stores = await this.storeModel
       .find({ state })
       .skip(offset)
@@ -94,7 +94,7 @@ export class StoreService {
 
     const total = await this.storeModel.countDocuments({ state });
 
-    const storeListResponse: StoreListResponse = {
+    const storeListResponse: Response1 = {
       stores,
       limit,
       offset,
@@ -104,17 +104,35 @@ export class StoreService {
     return storeListResponse;
   }
 
-  async storeById(storeId: string): Promise<StoreDocument> {
-    const store = await this.storeModel.findById(storeId).lean().exec();
+  async storeById(
+    storeId: string,
+    limit: number,
+    offset: number,
+  ): Promise<Response1> {
+    const stores = await this.storeModel
+      .find({ _id: storeId })
+      .skip(offset)
+      .limit(limit)
+      .lean()
+      .exec();
 
-    return store;
+    const total = await this.storeModel.countDocuments({ _id: storeId });
+
+    const storeListResponse: Response1 = {
+      stores,
+      limit,
+      offset,
+      total,
+    };
+
+    return storeListResponse;
   }
 
   async storeByCep(
     cep: string,
     limit: number,
     offset: number,
-  ): Promise<StoreByCepListResponse> {
+  ): Promise<Response2> {
     const origin: Coordinates = await getCompleteAddressByZipCode(cep).then(
       (completeAddress) => ({
         latitude: completeAddress.latitude,
@@ -139,14 +157,14 @@ export class StoreService {
       .sort((a, b) => a.distance - b.distance);
 
     // Calcula prazos e preços para cada loja
-    const enrichedStores: StoreComDistanceValueList = await Promise.all(
-      storesWithDistances.map((store: StoreComDistanceValue) =>
+    const enrichedStores: Store1ComDistanceValue[] = await Promise.all(
+      storesWithDistances.map((store: Store1ComDistanceValue) =>
         this.enrichStoreWithDeliveryDetails(store, cep),
       ),
     );
 
     // Formata lojas para resposta simplificada
-    const storeSimplificadaByCep = enrichedStores.map((store) => ({
+    const storeSimplificadaByCep: Store2[] = enrichedStores.map((store) => ({
       name: store.storeName,
       city: store.city,
       postalCode: store.postalCode,
@@ -172,16 +190,16 @@ export class StoreService {
 
   // Função para calcular prazos e preços
   private async enrichStoreWithDeliveryDetails(
-    store: StoreComDistanceValue,
+    store: Store1ComDistanceValue,
     cep: string,
-  ): Promise<StoreComDistanceValue> {
+  ): Promise<Store1ComDistanceValue> {
     if (store.distance <= 50) {
       // Entrega por motoboy
       store.value = [
         {
-          prazo: '1 dias úteis',
-          price: 'R$ 15,00',
-          description: 'Motoboy',
+          prazo: MotoboyEntrega.prazo,
+          price: MotoboyEntrega.price,
+          description: MotoboyEntrega.description,
         },
       ];
     } else if (store.type === 'LOJA' && store.distance > 50) {

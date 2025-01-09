@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ViaCepResponse } from '../../interfaces/viaCep.interface';
+import { ViaCepResponse } from '../../interfaces/via-cep.interface';
 import { BasicAdress } from 'src/interfaces/adress.interface';
 
 export const getAdressByPostalCode = async (postalCode: string) => {
