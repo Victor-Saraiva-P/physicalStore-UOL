@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { PrecoPrazoResponse } from '../../interfaces/correios.interface';
+import { PrecoPrazoResponse } from '@interfaces/correios.interface';
 
 export const calcularPrecoPrazo = async (
   cepOrigem: string,

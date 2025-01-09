@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { StoreDocument } from '../schemas/store.schema';
 import { Model } from 'mongoose';
+import { StoreDocument } from '@schemas/store.schema';
 import { CreateStoreDto } from './dtos/create-store.dto';
-import { getCompleteAddressByZipCode } from '../utils/address.util';
-import { CompleteAdress, Coordinates } from 'src/interfaces/adress.interface';
+import { UpdateStoreDto } from './dtos/update-store.dto';
+import { getCompleteAddressByZipCode } from '@utils/address.util';
+import { mapStoresWithDistances } from '@utils/storesDistanceMapper.util';
+import { calcularPrecoPrazo } from '@apis/correios/precosPrazos.api';
+import { CompleteAdress, Coordinates } from '@interfaces/adress.interface';
 import {
   Response1,
   Response2,
-} from 'src/store/storeInterfaces/storeResponses.interface';
-import { UpdateStoreDto } from './dtos/update-store.dto';
-import { mapStoresWithDistances } from 'src/utils/storesDistanceMapper.util';
-import { calcularPrecoPrazo } from 'src/apis/correios/precosPrazos.api';
-import { Store1ComDistanceValue } from 'src/store/storeInterfaces/store1.interface';
-import { Store2, MotoboyEntrega } from './storeInterfaces/store2.interface';
+} from '@storeInterfaces/storeResponses.interface';
+import { Store1ComDistanceValue } from '@storeInterfaces/store1.interface';
+import { Store2, MotoboyEntrega } from '@storeInterfaces/store2.interface';
 
 @Injectable()
 export class StoreService {

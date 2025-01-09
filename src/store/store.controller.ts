@@ -1,15 +1,21 @@
-import { Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Query,
+  Body,
+  Param,
+  Patch,
+} from '@nestjs/common';
 import { StoreService } from './store.service';
 import { CreateStoreDto } from './dtos/create-store.dto';
 import { UpdateStoreDto } from './dtos/update-store.dto';
-import { Body } from '@nestjs/common';
-import { Param } from '@nestjs/common';
-import { Patch } from '@nestjs/common';
 import {
   Response2,
   Response1,
   ResponseCrud,
-} from 'src/store/storeInterfaces/storeResponses.interface';
+} from '@storeInterfaces/storeResponses.interface';
 
 @Controller('store')
 export class StoreController {

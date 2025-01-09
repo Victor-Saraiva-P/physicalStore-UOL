@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Double } from 'mongoose';
+import { Document } from 'mongoose';
 
 // Define o tipo para documentos de loja
 export type StoreDocument = Store & Document;

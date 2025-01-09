@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { GoogleGeocodeResponse } from '../../interfaces/google.interface';
-import { BasicAdress, Coordinates } from 'src/interfaces/adress.interface';
+import { GoogleGeocodeResponse } from '@interfaces/google.interface';
+import { BasicAdress, Coordinates } from '@interfaces/adress.interface';
 
 export const getCoordinatesByAddress = async (
   // Usei o BasicAdress ao inves de só o cep, porque deixa o googleGeocode mais acertivo por não depender só do cep

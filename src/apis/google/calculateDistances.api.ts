@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { Coordinates } from '../../interfaces/adress.interface';
-import { GoogleDistanceResponse } from '../../interfaces/google.interface';
+import { Coordinates } from '@interfaces/adress.interface';
+import { GoogleDistanceResponse } from '@interfaces/google.interface';
 
 export async function calculateDistances(
   origin: Coordinates,

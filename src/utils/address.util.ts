@@ -1,6 +1,6 @@
-import { getAdressByPostalCode } from 'src/apis/viaCep/viaCep.api';
-import { getCoordinatesByAddress } from 'src/apis/google/geocode.api';
-import { CompleteAdress, Coordinates } from 'src/interfaces/adress.interface';
+import { getAdressByPostalCode } from '@apis/viaCep/viaCep.api';
+import { getCoordinatesByAddress } from '@apis/google/geocode.api';
+import { CompleteAdress, Coordinates } from '@interfaces/adress.interface';
 
 export const getCompleteAddressByZipCode = async (postalCode: string) => {
   // obter os dados de endereço pelo Postal code(CEP)

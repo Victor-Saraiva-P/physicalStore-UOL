@@ -1,9 +1,6 @@
-import { calculateDistances } from '../apis/google/calculateDistances.api';
-import { Coordinates } from '../interfaces/adress.interface';
-import {
-  Store1ComDistance,
-  Store1,
-} from 'src/store/storeInterfaces/store1.interface';
+import { calculateDistances } from '@apis/google/calculateDistances.api';
+import { Coordinates } from '@interfaces/adress.interface';
+import { Store1ComDistance, Store1 } from '@storeInterfaces/store1.interface';
 
 export async function mapStoresWithDistances(
   origin: Coordinates,
