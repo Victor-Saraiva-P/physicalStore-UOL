@@ -1,5 +1,5 @@
 // Interface principal para Store
-export interface Store {
+export interface Store1 {
   storeName: string;
   takeOutInStore: boolean;
   shippingTimeInDays: number;
@@ -16,63 +16,57 @@ export interface Store {
 }
 
 // Interfaces relacionadas à Store com distância e prazos
-export interface StoreComDistance extends Store {
+export interface Store1ComDistance extends Store1 {
   distance: number;
 }
 
-export interface StoreComDistanceValue extends StoreComDistance {
-  value: DeliveryValueList;
+export interface Store1ComDistanceValue extends Store1ComDistance {
+  value: DeliveryValue[];
 }
 
-export interface StoreSimplificadaByCep {
+export interface Store2 {
   name: string;
   city: string;
   postalCode: string;
   type: string;
   distance: number;
-  value: DeliveryValueList;
+  value: DeliveryValue[];
 }
 
 // Interfaces para respostas de listagens e detalhes
-export interface StoreListResponse {
-  stores: Store[];
+export interface Response1 {
+  stores: Store1[];
   limit: number;
   offset: number;
   total: number;
 }
 
-export interface StoreByCepListResponse {
-  stores: StoreSimplificadaByCep[];
-  pins: Pin[];
+export interface Response2 {
+  stores: Store2[];
+  pins: PinMaps[];
   limit: number;
   offset: number;
   total: number;
 }
 
-export interface StoreResponse {
+export interface ResponseCrud {
   message: string;
-  store: Store;
+  store: Store1;
 }
 
 // Interface relacionada a Pins
-export interface Pin {
+export interface PinMaps {
   position: {
     lat: number;
     lng: number;
   };
-  title: StoreSimplificadaByCep['name'];
+  title: Store2['name'];
 }
 
 // Interface para valores de prazos e preços
 export interface DeliveryValue {
   prazo: string;
-  codProdutoAgencia?: string;
+  codProdutoAgencia?: string; // Porque motoboy não tem código de produto
   price: string;
   description: string;
 }
-
-// Tipos relacionados a listas
-export type StoreList = Store[];
-export type StoreComDistanceList = StoreComDistance[];
-export type DeliveryValueList = DeliveryValue[];
-export type StoreComDistanceValueList = StoreComDistanceValue[];
