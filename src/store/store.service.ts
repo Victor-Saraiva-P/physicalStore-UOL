@@ -133,37 +133,39 @@ export class StoreService {
     limit: number,
     offset: number,
   ): Promise<Response2> {
+    // Obtém as coordenadas do CEP informado
     const origin: Coordinates = await getCompleteAddressByZipCode(cep).then(
       (completeAddress) => ({
         latitude: completeAddress.latitude,
         longitude: completeAddress.longitude,
       }),
     );
-    const stores = await this.storeModel
-      .find()
-      .lean()
-      .skip(offset)
-      .limit(limit)
-      .exec();
 
-    // Adiciona distâncias e filtra lojas
-    const storesWithDistances = (await mapStoresWithDistances(origin, stores))
+    // Recupera todas as lojas do banco
+    const allStores = await this.storeModel.find().lean().exec();
+
+    // Adiciona distâncias às lojas e aplica os filtros e ordena
+    const storesWithDistances = (
+      await mapStoresWithDistances(origin, allStores)
+    )
       .filter(
         (store) =>
-          // Filtra os PDV que estão muito longe e as que não fazem entrega
-          !(store.type === 'PDV' && store.distance > 50) ||
-          store.takeOutInStore !== false,
+          store.takeOutInStore !== false &&
+          (store.type !== 'PDV' || store.distance <= 50),
       )
       .sort((a, b) => a.distance - b.distance);
 
-    // Calcula prazos e preços para cada loja
+    // Aplica paginação após o cálculo das distâncias (usando o limit para mostrar as lojas mais proximas)
+    const paginatedStores = storesWithDistances.slice(offset, offset + limit);
+
+    // Calcula prazos e preços para cada loja paginada
     const enrichedStores: Store1ComDistanceValue[] = await Promise.all(
-      storesWithDistances.map((store: Store1ComDistanceValue) =>
+      paginatedStores.map((store: Store1ComDistanceValue) =>
         this.enrichStoreWithDeliveryDetails(store, cep),
       ),
     );
 
-    // Formata lojas para resposta simplificada
+    // Formata Stores para a Store2 (para encaixar no response da rota)
     const storeSimplificadaByCep: Store2[] = enrichedStores.map((store) => ({
       name: store.storeName,
       city: store.city,
@@ -174,7 +176,7 @@ export class StoreService {
     }));
 
     return {
-      stores: storeSimplificadaByCep.slice(offset, offset + limit),
+      stores: storeSimplificadaByCep,
       pins: enrichedStores.map((store) => ({
         position: {
           lat: store.latitude,
@@ -184,7 +186,7 @@ export class StoreService {
       })),
       limit,
       offset,
-      total: storeSimplificadaByCep.length,
+      total: storesWithDistances.length, // Total antes da paginação
     };
   }
 
