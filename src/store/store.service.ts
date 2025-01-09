@@ -7,12 +7,12 @@ import { getCompleteAddressByZipCode } from '../utils/address.util';
 import { CompleteAdress, Coordinates } from 'src/interfaces/adress.interface';
 import {
   Response2,
-  Store1ComDistanceValue,
   Response1,
-} from 'src/interfaces/store.interface';
+} from 'src/store/storeInterfaces/storeResponses.interface';
 import { UpdateStoreDto } from './dtos/update-store.dto';
 import { mapStoresWithDistances } from 'src/utils/storesDistanceMapper.util';
 import { calcularPrecoPrazo } from 'src/apis/correios/precosPrazos.api';
+import { Store1ComDistanceValue } from 'src/store/storeInterfaces/store1.interface';
 
 @Injectable()
 export class StoreService {

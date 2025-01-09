@@ -9,7 +9,7 @@ import {
   Response2,
   Response1,
   ResponseCrud,
-} from 'src/interfaces/store.interface';
+} from 'src/store/storeInterfaces/storeResponses.interface';
 
 @Controller('store')
 export class StoreController {
