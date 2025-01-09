@@ -1,5 +1,5 @@
 // Interface principal para Store
-export class Store {
+export interface Store {
   storeName: string;
   takeOutInStore: boolean;
   shippingTimeInDays: number;
@@ -16,15 +16,15 @@ export class Store {
 }
 
 // Interfaces relacionadas à Store com distância e prazos
-export class StoreComDistance extends Store {
+export interface StoreComDistance extends Store {
   distance: number;
 }
 
-export class StoreComDistanceValue extends StoreComDistance {
+export interface StoreComDistanceValue extends StoreComDistance {
   value: DeliveryValueList;
 }
 
-export class StoreSimplificadaByCep {
+export interface StoreSimplificadaByCep {
   name: string;
   city: string;
   postalCode: string;
@@ -34,14 +34,14 @@ export class StoreSimplificadaByCep {
 }
 
 // Interfaces para respostas de listagens e detalhes
-export class StoreListResponse {
+export interface StoreListResponse {
   stores: Store[];
   limit: number;
   offset: number;
   total: number;
 }
 
-export class StoreByCepListResponse {
+export interface StoreByCepListResponse {
   stores: StoreSimplificadaByCep[];
   pins: Pin[];
   limit: number;
@@ -49,13 +49,13 @@ export class StoreByCepListResponse {
   total: number;
 }
 
-export class StoreResponse {
+export interface StoreResponse {
   message: string;
   store: Store;
 }
 
 // Interface relacionada a Pins
-export class Pin {
+export interface Pin {
   position: {
     lat: number;
     lng: number;
@@ -64,7 +64,7 @@ export class Pin {
 }
 
 // Interface para valores de prazos e preços
-export class DeliveryValue {
+export interface DeliveryValue {
   prazo: string;
   codProdutoAgencia?: string;
   price: string;
@@ -76,8 +76,3 @@ export type StoreList = Store[];
 export type StoreComDistanceList = StoreComDistance[];
 export type DeliveryValueList = DeliveryValue[];
 export type StoreComDistanceValueList = StoreComDistanceValue[];
-
-interface Location {
-  type: string;
-  coordinates: number[];
-}
