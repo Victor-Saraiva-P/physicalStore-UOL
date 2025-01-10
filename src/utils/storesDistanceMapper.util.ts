@@ -8,7 +8,7 @@ export async function mapStoresWithDistances(
 ): Promise<Store1ComDistance[]> {
   const distances = await calculateDistances(origin, stores);
 
-  // Verifica se o número de distâncias corresponde ao número de lojas
+  // Verifica se o número de distâncias corresponde ao número de stores
   if (distances.length !== stores.length) {
     throw new Error('Number of distances does not match number of stores.');
   }

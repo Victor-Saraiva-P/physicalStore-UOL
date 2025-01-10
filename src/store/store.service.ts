@@ -1,9 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { StoreDocument } from '@schemas/store.schema';
 import { CreateStoreDto } from './dtos/create-store.dto';
-import { UpdateStoreDto } from './dtos/update-store.dto';
 import { getCompleteAddressByZipCode } from '@utils/address.util';
 import { mapStoresWithDistances } from '@utils/storesDistanceMapper.util';
 import { calcularPrecoPrazo } from '@apis/correios/precosPrazos.api';
@@ -36,12 +35,12 @@ export class StoreService {
 
   async update(
     id: string,
-    updateStoreDto: UpdateStoreDto,
+    updateStoreDto: Partial<CreateStoreDto>,
   ): Promise<StoreDocument> {
     const existingStore = await this.storeModel.findById(id);
 
     if (!existingStore) {
-      throw new NotFoundException('Store não encontrada');
+      throw new HttpException('Store não encontrada', HttpStatus.NOT_FOUND);
     }
 
     if (updateStoreDto.postalCode) {
@@ -61,7 +60,7 @@ export class StoreService {
   async remove(id: string): Promise<void> {
     const result = await this.storeModel.findByIdAndDelete(id);
     if (!result) {
-      throw new NotFoundException('Store não encontrada');
+      throw new HttpException('Store não encontrada', HttpStatus.NOT_FOUND);
     }
   }
 
@@ -90,14 +89,17 @@ export class StoreService {
     limit: number,
     offset: number,
   ): Promise<Response1> {
+    const FormatedState = state.toUpperCase();
     const stores = await this.storeModel
-      .find({ state })
+      .find({ state: FormatedState })
       .skip(offset)
       .limit(limit)
       .lean()
       .exec();
 
-    const total = await this.storeModel.countDocuments({ state });
+    const total = await this.storeModel.countDocuments({
+      state: FormatedState,
+    });
 
     const storeListResponse: Response1 = {
       stores,
@@ -141,10 +143,10 @@ export class StoreService {
     // Obtém as coordenadas do CEP informado
     const origin: Coordinates = await getCoordinates(cep);
 
-    // Recupera todas as lojas do banco
+    // Recupera todas as stores do banco
     const allStores = await this.storeModel.find().lean().exec();
 
-    // Adiciona distâncias às lojas e aplica os filtros e ordena
+    // Adiciona distâncias às stores e aplica os filtros e ordena
     const storesWithDistances = (
       await mapStoresWithDistances(origin, allStores)
     )
@@ -155,7 +157,7 @@ export class StoreService {
       )
       .sort((a, b) => a.distance - b.distance);
 
-    // Aplica paginação após o cálculo das distâncias (usando o limit para mostrar as lojas mais proximas)
+    // Aplica paginação após o cálculo das distâncias (usando o limit para mostrar as stores mais proximas)
     const paginatedStores = storesWithDistances.slice(offset, offset + limit);
 
     // Calcula prazos e preços para cada loja paginada
@@ -221,11 +223,13 @@ export class StoreService {
           prazo: `${prazoFinalSedex} dias úteis`,
           price: correiosResponse.sedex.precoAgencia,
           description: correiosResponse.sedex.urlTitulo,
+          codProdutoAgencia: correiosResponse.sedex.codProdutoAgencia,
         },
         {
           prazo: `${prazoFinalPac} dias úteis`,
           price: correiosResponse.pac.precoAgencia,
           description: correiosResponse.pac.urlTitulo,
+          codProdutoAgencia: correiosResponse.pac.codProdutoAgencia,
         },
       ];
     }

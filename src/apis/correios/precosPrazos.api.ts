@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { PrecoPrazoResponse } from '@interfaces/correios.interface';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 export const calcularPrecoPrazo = async (
   cepOrigem: string,
@@ -17,19 +18,17 @@ export const calcularPrecoPrazo = async (
       },
     );
 
-    if (!response.data || !Array.isArray(response.data) || response.data.length < 2) {
-      throw new Error('Resposta inválida dos Correios');
-    }
-
     const pracoPrazoResponse: PrecoPrazoResponse = {
       sedex: response.data[0],
       pac: response.data[1],
     };
     return pracoPrazoResponse;
-
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw new Error(`Erro na requisição aos Correios: ${error.message}`);
+      throw new HttpException(
+        `Erro na requisição aos Correios: ${error.message}`,
+        HttpStatus.SERVICE_UNAVAILABLE,
+      );
     }
     throw error;
   }
