@@ -15,7 +15,7 @@ async function bootstrap() {
     .setTitle('Physical Store API')
     .setDescription('API para gerenciar lojas físicas e calcular distâncias')
     .setVersion('1.0')
-    .addTag('stores') // Adicione tags relevantes para organizar os endpoints
+    .addTag('Stores') // Adicione tags relevantes para organizar os endpoints
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
