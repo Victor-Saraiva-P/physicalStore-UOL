@@ -26,9 +26,6 @@ export class StoreService {
       createStoreDto.postalCode,
     );
 
-    // Padronizar o postalCode para o formato sem hífen (para evitar erros em apis)
-    createStoreDto.postalCode = createStoreDto.postalCode.replace('-', '');
-
     const createdStore = new this.storeModel({
       ...createStoreDto,
       ...completeADress,

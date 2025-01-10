@@ -1,4 +1,3 @@
-import { Transform } from 'class-transformer';
 import {
   IsString,
   IsNotEmpty,
@@ -54,7 +53,6 @@ export class CreateStoreDto {
 
   @IsNotEmpty({ message: 'O CEP é obrigatório.' })
   @IsString()
-  @Transform(({ value }) => value.replace('-', ''))
   @Matches(/^\d{8}$/, {
     message: 'O CEP deve estar no formato 12345678 (apenas números).',
   })

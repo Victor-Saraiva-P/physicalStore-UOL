@@ -3,11 +3,6 @@ import { ViaCepResponse } from '@interfaces/via-cep.interface';
 import { BasicAdress } from '@interfaces/adress.interface';
 
 export const getAdressByPostalCode = async (postalCode: string) => {
-  const cepRegex = /^[0-9]{8}$/;
-  if (!cepRegex.test(postalCode)) {
-    throw new Error('Invalid postal code format');
-  }
-
   try {
     const response = await axios.get<ViaCepResponse>(
       `https://viacep.com.br/ws/${postalCode}/json/`,
