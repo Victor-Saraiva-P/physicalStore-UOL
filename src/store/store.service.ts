@@ -195,7 +195,7 @@ export class StoreService {
       // Entrega por motoboy
       store.value = [
         {
-          prazo: MotoboyEntrega.prazo,
+          prazo: `${MotoboyEntrega.prazo + store.shippingTimeInDays} dias úteis`,
           price: MotoboyEntrega.price,
           description: MotoboyEntrega.description,
         },
