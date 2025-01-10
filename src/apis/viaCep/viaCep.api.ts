@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ViaCepResponse } from '@interfaces/via-cep.interface';
 import { BasicAdress } from '@interfaces/adress.interface';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 export const getAdressByPostalCode = async (postalCode: string) => {
   try {
@@ -9,7 +10,7 @@ export const getAdressByPostalCode = async (postalCode: string) => {
     );
 
     if (response.data.erro) {
-      throw new Error('Cep inválido');
+      throw new HttpException('CEP inválido', HttpStatus.BAD_REQUEST);
     }
 
     const basicAdress: BasicAdress = {
@@ -23,11 +24,14 @@ export const getAdressByPostalCode = async (postalCode: string) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 400) {
-        throw new Error('Cep inválido');
+        throw new HttpException('CEP inválido', HttpStatus.BAD_REQUEST);
       }
 
       if (error.code === 'ECONNRESET') {
-        throw new Error('Erro ao acessar o ViaCep');
+        throw new HttpException(
+          'Erro ao acessar o ViaCep',
+          HttpStatus.SERVICE_UNAVAILABLE,
+        );
       }
     }
 

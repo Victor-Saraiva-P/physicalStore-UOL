@@ -1,11 +1,10 @@
 import axios, { AxiosError } from 'axios';
 import { GoogleGeocodeResponse } from '@interfaces/google.interface';
 import { BasicAdress, Coordinates } from '@interfaces/adress.interface';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 export const getCoordinates = async (
-  address:
-    | string
-    | BasicAdress,
+  address: string | BasicAdress,
 ): Promise<Coordinates> => {
   try {
     let formattedAddress: string;
@@ -17,7 +16,10 @@ export const getCoordinates = async (
     }
 
     if (!process.env.GOOGLE_API_KEY) {
-      throw new Error('Google API key não configurada');
+      throw new HttpException(
+        'Google API key não configurada',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
 
     const { data } = await axios.get<GoogleGeocodeResponse>(
@@ -32,7 +34,7 @@ export const getCoordinates = async (
     );
 
     if (!data.results || data.results.length === 0) {
-      throw new Error('Endereço não encontrado');
+      throw new HttpException('Endereço não encontrado', HttpStatus.NOT_FOUND);
     }
 
     const coordinates: Coordinates = {
@@ -42,7 +44,10 @@ export const getCoordinates = async (
     return coordinates;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw new Error(`Erro na requisição: ${error.message}`);
+      throw new HttpException(
+        `Erro na requisição ao Google Geocoding: ${error.message}`,
+        HttpStatus.SERVICE_UNAVAILABLE,
+      );
     }
     throw error;
   }

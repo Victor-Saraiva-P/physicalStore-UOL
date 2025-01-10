@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { Coordinates } from '@interfaces/adress.interface';
 import { GoogleDistanceResponse } from '@interfaces/google.interface';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 export async function calculateDistances(
   origin: Coordinates,
@@ -8,11 +9,17 @@ export async function calculateDistances(
 ): Promise<number[]> {
   try {
     if (!process.env.GOOGLE_API_KEY) {
-      throw new Error('Chave da API do Google não configurada');
+      throw new HttpException(
+        'Chave da API do Google não configurada',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
 
     if (!destinations.length) {
-      throw new Error('Lista de destinos está vazia');
+      throw new HttpException(
+        'Lista de destinos está vazia',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const destinationCoordinates = destinations
@@ -33,19 +40,27 @@ export async function calculateDistances(
     const elements = response.data.rows[0]?.elements;
 
     if (!elements || elements.length === 0) {
-      throw new Error('Nenhum resultado encontrado na resposta da API do Google');
+      throw new HttpException(
+        'Nenhum resultado encontrado na resposta da API do Google',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     return elements.map((element) => {
       if (element.status !== 'OK') {
-        throw new Error(`Erro no cálculo de distância: ${element.status}`);
+        throw new HttpException(
+          `Erro no cálculo de distância: ${element.status}`,
+          HttpStatus.BAD_REQUEST,
+        );
       }
       return element.distance.value;
     });
-
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw new Error(`Erro na requisição à API do Google: ${error.message}`);
+      throw new HttpException(
+        `Erro na requisição à API do Google: ${error.message}`,
+        HttpStatus.SERVICE_UNAVAILABLE,
+      );
     }
     throw error;
   }

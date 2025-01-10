@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { StoreDocument } from '@schemas/store.schema';
@@ -41,7 +41,7 @@ export class StoreService {
     const existingStore = await this.storeModel.findById(id);
 
     if (!existingStore) {
-      throw new NotFoundException('Store não encontrada');
+      throw new HttpException('Store não encontrada', HttpStatus.NOT_FOUND);
     }
 
     if (updateStoreDto.postalCode) {
@@ -61,7 +61,7 @@ export class StoreService {
   async remove(id: string): Promise<void> {
     const result = await this.storeModel.findByIdAndDelete(id);
     if (!result) {
-      throw new NotFoundException('Store não encontrada');
+      throw new HttpException('Store não encontrada', HttpStatus.NOT_FOUND);
     }
   }
 
