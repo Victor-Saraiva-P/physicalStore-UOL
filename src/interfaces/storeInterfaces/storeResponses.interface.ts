@@ -4,7 +4,10 @@ import { Store2 } from './store2.interface';
 import { Store } from '@schemas/store.schema';
 
 export class PinMaps {
-  @ApiProperty({ example: { lat: -23.55052, lng: -36.4414787 }, description: 'Latitude e longitude da store' })
+  @ApiProperty({
+    example: { lat: -23.55052, lng: -36.4414787 },
+    description: 'Latitude e longitude da store',
+  })
   position: {
     lat: number;
     lng: number;

@@ -20,7 +20,7 @@ export class DeliveryValue {
   @ApiProperty({
     example: '04014',
     description: 'Código do produto (Aparece apenas para entregas do correio)',
-    required: false
+    required: false,
   })
   codProdutoAgencia?: string;
 }
