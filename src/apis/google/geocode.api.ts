@@ -1,34 +1,49 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { GoogleGeocodeResponse } from '@interfaces/google.interface';
 import { BasicAdress, Coordinates } from '@interfaces/adress.interface';
 
 export const getCoordinates = async (
   address:
-    | string // Ou cep
-    | BasicAdress, // Ou um endereço completo
+    | string
+    | BasicAdress,
 ): Promise<Coordinates> => {
-  let formattedAddress: string;
+  try {
+    let formattedAddress: string;
 
-  if (typeof address === 'string') {
-    formattedAddress = address;
-  } else {
-    formattedAddress = Object.values(address).join(', ');
-  }
+    if (typeof address === 'string') {
+      formattedAddress = address;
+    } else {
+      formattedAddress = Object.values(address).join(', ');
+    }
 
-  const { data } = await axios.get<GoogleGeocodeResponse>(
-    'https://maps.googleapis.com/maps/api/geocode/json',
-    {
-      params: {
-        address: formattedAddress,
-        region: 'br',
-        key: process.env.GOOGLE_API_KEY,
+    if (!process.env.GOOGLE_API_KEY) {
+      throw new Error('Google API key não configurada');
+    }
+
+    const { data } = await axios.get<GoogleGeocodeResponse>(
+      'https://maps.googleapis.com/maps/api/geocode/json',
+      {
+        params: {
+          address: formattedAddress,
+          region: 'br',
+          key: process.env.GOOGLE_API_KEY,
+        },
       },
-    },
-  );
+    );
 
-  const coordinates: Coordinates = {
-    latitude: data.results[0].geometry.location.lat,
-    longitude: data.results[0].geometry.location.lng,
-  };
-  return coordinates;
+    if (!data.results || data.results.length === 0) {
+      throw new Error('Endereço não encontrado');
+    }
+
+    const coordinates: Coordinates = {
+      latitude: data.results[0].geometry.location.lat,
+      longitude: data.results[0].geometry.location.lng,
+    };
+    return coordinates;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(`Erro na requisição: ${error.message}`);
+    }
+    throw error;
+  }
 };
