@@ -7,10 +7,10 @@ export type StoreDocument = Store & Document;
 @Schema()
 export class Store {
   @Prop({
-    required: [true, 'O nome da loja é obrigatório.'],
+    required: [true, 'O nome da stores é obrigatório.'],
     type: String,
-    minlength: [3, 'O nome da loja deve ter no mínimo 3 caracteres.'],
-    maxlength: [100, 'O nome da loja deve ter no máximo 100 caracteres.'],
+    minlength: [3, 'O nome da stores deve ter no mínimo 3 caracteres.'],
+    maxlength: [100, 'O nome da stores deve ter no máximo 100 caracteres.'],
   })
   storeName: string;
 
@@ -77,10 +77,10 @@ export class Store {
 
   @Prop({
     type: String,
-    required: [true, 'O tipo da loja é obrigatório.'],
+    required: [true, 'O tipo da stores é obrigatório.'],
     enum: {
       values: ['PDV', 'LOJA'],
-      message: 'O tipo da loja deve ser "PDV" ou "LOJA".',
+      message: 'O tipo da stores deve ser "PDV" ou "LOJA".',
     },
   })
   type: string;
@@ -119,7 +119,15 @@ export const StoreSchema = SchemaFactory.createForClass(Store);
 // Middleware para normalizar o CEP
 StoreSchema.pre('save', function (next) {
   if (this.postalCode) {
-    this.postalCode = this.postalCode.replace('-', '');
+    this.postalCode = this.postalCode.replace(/\D/g, '');
+  }
+  next();
+});
+
+StoreSchema.pre(['updateOne', 'findOneAndUpdate'], function (next) {
+  const update = this.getUpdate() as any;
+  if (update && update.postalCode) {
+    update.postalCode = update.postalCode.replace(/\D/g, '');
   }
   next();
 });

@@ -14,20 +14,20 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateStoreDto {
   @ApiProperty({
-    description: 'Nome da loja',
+    description: 'Nome da stores',
     example: 'Minha Loja',
     minLength: 3,
     maxLength: 100,
   })
   @IsString()
-  @IsNotEmpty({ message: 'O nome da loja é obrigatório.' })
+  @IsNotEmpty({ message: 'O nome da stores é obrigatório.' })
   @Length(3, 100, {
-    message: 'O nome da loja deve ter entre 3 e 100 caracteres.',
+    message: 'O nome da stores deve ter entre 3 e 100 caracteres.',
   })
   storeName: string;
 
   @ApiProperty({
-    description: 'Se o produto pode ser retirado na loja',
+    description: 'Se o produto pode ser retirado na stores',
     example: true,
     required: false,
     default: true,
@@ -49,7 +49,7 @@ export class CreateStoreDto {
   shippingTimeInDays: number;
 
   @ApiProperty({
-    description: 'Endereço complementar da loja',
+    description: 'Endereço complementar da lojstoresa',
     example: 'Apto 101',
     maxLength: 255,
     required: false,
@@ -62,7 +62,7 @@ export class CreateStoreDto {
   address2: string;
 
   @ApiProperty({
-    description: 'Outro endereço complementar da loja',
+    description: 'Outro endereço complementar da stores',
     example: 'Bloco B',
     maxLength: 255,
     required: false,
@@ -75,19 +75,19 @@ export class CreateStoreDto {
   address3: string;
 
   @ApiProperty({
-    description: 'Tipo da loja (PDV ou LOJA)',
+    description: 'Tipo da stores (PDV ou LOJA)',
     example: 'PDV',
     enum: ['PDV', 'LOJA'],
   })
   @IsString()
-  @IsNotEmpty({ message: 'O tipo da loja é obrigatório.' })
+  @IsNotEmpty({ message: 'O tipo da stores é obrigatório.' })
   @IsIn(['PDV', 'LOJA'], {
-    message: 'O tipo da loja deve ser "PDV" ou "LOJA".',
+    message: 'O tipo da stores deve ser "PDV" ou "LOJA".',
   })
   type: string;
 
   @ApiProperty({
-    description: 'CEP da loja',
+    description: 'CEP da stores',
     example: '12345678',
     pattern: '^\\d{8}$',
   })
@@ -99,7 +99,7 @@ export class CreateStoreDto {
   postalCode: string;
 
   @ApiProperty({
-    description: 'Telefone da loja',
+    description: 'Telefone da stores',
     example: '(11) 99999-9999',
     required: false,
     pattern: '^\\(\\d{2}\\)\\s\\d{4,5}-\\d{4}$',
@@ -112,7 +112,7 @@ export class CreateStoreDto {
   telephoneNumber: string;
 
   @ApiProperty({
-    description: 'E-mail da loja',
+    description: 'E-mail da stores',
     example: 'contato@loja.com',
     required: false,
   })

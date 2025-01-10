@@ -12,14 +12,15 @@ async function bootstrap() {
 
   // Configuração do Swagger
   const config = new DocumentBuilder()
-    .setTitle('Physical Store API')
-    .setDescription('API para gerenciar lojas físicas e calcular distâncias')
+    .setTitle('API Physical Store')
+    .setDescription('Documentação da API para gerenciar stores e calcular distâncias e frete')
     .setVersion('1.0')
-    .addTag('Stores') // Adicione tags relevantes para organizar os endpoints
+    .addTag('Stores')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document); // Acessível em /api
+  SwaggerModule.setup('api', app, document);
+
 
   // Habilitando o class-validator
   app.useGlobalPipes(new ValidationPipe());
