@@ -1,5 +1,5 @@
 import { getAdressByPostalCode } from '@apis/viaCep/viaCep.api';
-import { getCoordinatesByAddress } from '@apis/google/geocode.api';
+import { getCoordinates } from '@apis/google/geocode.api';
 import { CompleteAdress, Coordinates } from '@interfaces/adress.interface';
 
 export const getCompleteAddressByZipCode = async (postalCode: string) => {
@@ -7,7 +7,7 @@ export const getCompleteAddressByZipCode = async (postalCode: string) => {
   const basicAdress = await getAdressByPostalCode(postalCode);
 
   // obter as coordenadas de latitude e longitude pelo endereço
-  const coordinates: Coordinates = await getCoordinatesByAddress(basicAdress);
+  const coordinates: Coordinates = await getCoordinates(basicAdress);
 
   // retornar o endereço completo
   const completeAddress: CompleteAdress = {

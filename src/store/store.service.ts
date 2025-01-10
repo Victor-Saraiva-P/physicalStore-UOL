@@ -14,6 +14,7 @@ import {
 } from '@storeInterfaces/storeResponses.interface';
 import { Store1ComDistanceValue } from '@storeInterfaces/store1.interface';
 import { Store2, MotoboyEntrega } from '@storeInterfaces/store2.interface';
+import { getCoordinates } from '@apis/google/geocode.api';
 
 @Injectable()
 export class StoreService {
@@ -134,12 +135,7 @@ export class StoreService {
     offset: number,
   ): Promise<Response2> {
     // Obtém as coordenadas do CEP informado
-    const origin: Coordinates = await getCompleteAddressByZipCode(cep).then(
-      (completeAddress) => ({
-        latitude: completeAddress.latitude,
-        longitude: completeAddress.longitude,
-      }),
-    );
+    const origin: Coordinates = await getCoordinates(cep);
 
     // Recupera todas as lojas do banco
     const allStores = await this.storeModel.find().lean().exec();
@@ -186,7 +182,7 @@ export class StoreService {
       })),
       limit,
       offset,
-      total: storesWithDistances.length, // Total antes da paginação
+      total: storesWithDistances.length,
     };
   }
 
