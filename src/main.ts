@@ -1,8 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { validateEnvVariables } from '@validators/env-variables.validator';
 
 async function bootstrap() {
+  // Validando as variáveis de ambiente
+  validateEnvVariables();
+
   const app = await NestFactory.create(AppModule);
 
   // Habilitando o class-validator
