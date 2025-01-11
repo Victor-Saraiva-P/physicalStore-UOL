@@ -100,4 +100,93 @@ describe('StoreService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('should create a new store', async () => {
+    const newStore: CreateStoreDto = {
+      storeName: 'Store de Teste',
+      takeOutInStore: true,
+      shippingTimeInDays: 3,
+      address2: 'Endereço Adicinal 2',
+      address3: 'Endereço Adicinal 3',
+      type: 'LOJA',
+      postalCode: '93534230',
+      telephoneNumber: '(11) 91234-5678',
+      emailAddress: 'teste@loja.com',
+    };
+
+    // Chama o método create do serviço
+    const createdStore = await service.create(newStore);
+
+    // Verifica se o retorno do método contém os dados extras gerados pelo viaCep
+    expect(createdStore).toBeDefined();
+    expect(createdStore.id).toBeDefined();
+    expect(createdStore.address).toBeDefined();
+    expect(createdStore.district).toBeDefined();
+    expect(createdStore.city).toBeDefined();
+    expect(createdStore.state).toBeDefined();
+    expect(createdStore.latitude).toBeDefined();
+    expect(createdStore.longitude).toBeDefined();
+
+    // Verifica se a loja foi salva no banco
+    const savedStore = await service.storeById(createdStore.id, 100, 0);
+    expect(savedStore).toBeDefined(); // Verifica a loja criada no teste
+  });
+
+  it('should update an existing store', async () => {
+    // cria uma loja para atualizar os dados
+    const newStore: CreateStoreDto = {
+      storeName: 'Store de Teste',
+      shippingTimeInDays: 3,
+      type: 'LOJA',
+      postalCode: '93534230',
+    };
+    // Salva nova loja
+    const storeToUpdate = await service.create(newStore);
+
+    // Dados para atualização
+    const updateData = {
+      storeName: 'Nome da store atualizado',
+      shippingTimeInDays: 7,
+      postalCode: '75910033',
+    };
+
+    // Chama o método update do serviço
+    const updatedStore = await service.update(storeToUpdate.id, updateData);
+
+    // Verifica se os dados foram atualizados corretamente
+    expect(updatedStore).toBeDefined();
+    expect(updatedStore.storeName).toBe(updateData.storeName);
+    expect(updatedStore.shippingTimeInDays).toBe(updateData.shippingTimeInDays);
+    expect(updatedStore.postalCode).toBe(updateData.postalCode);
+
+    // Verifica se as coordenadas foram atualizadas e é diferente das coordenadas originais
+    expect(updatedStore.latitude).not.toBe(storeToUpdate.latitude);
+    expect(updatedStore.longitude).not.toBe(storeToUpdate.longitude);
+  });
+
+  it('should delete an existing store', async () => {
+    // cria uma loja para atualizar os dados
+    const newStore: CreateStoreDto = {
+      storeName: 'Store de Teste',
+      shippingTimeInDays: 3,
+      type: 'LOJA',
+      postalCode: '93534230',
+    };
+    // Salva nova loja
+    const storeToDelete = await service.create(newStore);
+
+    // Chama o método delete do serviço
+    await service.remove(storeToDelete.id);
+
+    // Verifica se a loja foi realmente deletada
+    const tryFindRemovedStore = await service.storeById(
+      storeToDelete.id,
+      100,
+      0,
+    );
+    expect(tryFindRemovedStore.total).toBe(0); // A loja deletada não deve estar na lista
+  });
+});
+
+describe('Testes unitários obrigatórios', () => {
 });
