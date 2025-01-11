@@ -1,4 +1,7 @@
 import { Config } from 'jest';
+import * as dotenv from 'dotenv';
+
+dotenv.config({ path: '.env.test' });
 
 const config: Config = {
   moduleFileExtensions: ['js', 'json', 'ts'],

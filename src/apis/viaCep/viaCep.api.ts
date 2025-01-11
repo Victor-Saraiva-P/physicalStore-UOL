@@ -10,7 +10,10 @@ export const getAdressByPostalCode = async (postalCode: string) => {
     );
 
     if (response.data.erro) {
-      throw new HttpException('CEP inválido', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        `CEP ${postalCode} é inválido`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const basicAdress: BasicAdress = {
@@ -24,7 +27,10 @@ export const getAdressByPostalCode = async (postalCode: string) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 400) {
-        throw new HttpException('CEP inválido', HttpStatus.BAD_REQUEST);
+        throw new HttpException(
+          `CEP ${postalCode} é inválido`,
+          HttpStatus.BAD_REQUEST,
+        );
       }
 
       if (error.code === 'ECONNRESET') {
