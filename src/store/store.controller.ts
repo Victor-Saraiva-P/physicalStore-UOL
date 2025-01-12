@@ -14,7 +14,7 @@ import {
   Response2,
   Response1,
   ResponseCrud,
-} from '@storeInterfaces/storeResponses.interface';
+} from '@classes/storeClasses/storeResponses.class';
 import {
   ApiBody,
   ApiOperation,
@@ -90,10 +90,10 @@ export class StoreController {
       properties: {
         message: {
           type: 'string',
-          example: 'Store Removida com sucesso'
-        }
-      }
-    }
+          example: 'Store Removida com sucesso',
+        },
+      },
+    },
   })
   async remove(@Param('id') id: string): Promise<{ message: string }> {
     await this.storeService.remove(id);
@@ -173,7 +173,9 @@ export class StoreController {
   }
 
   @Get('by-cep/:cep')
-  @ApiOperation({ summary: 'Busca stores próximas a um CEP e calcula sua entrega' })
+  @ApiOperation({
+    summary: 'Busca stores próximas a um CEP e calcula sua entrega',
+  })
   @ApiParam({
     name: 'cep',
     description: 'CEP para buscar stores próximas',

@@ -1,6 +1,6 @@
 import { calculateDistances } from '@apis/google/calculateDistances.api';
-import { Coordinates } from '@interfaces/adress.interface';
-import { Store1ComDistance, Store1 } from '@storeInterfaces/store1.interface';
+import { Coordinates } from '@classes/adress.interface';
+import { Store1ComDistance, Store1 } from '@classes/storeClasses/store1.classe';
 
 export async function mapStoresWithDistances(
   origin: Coordinates,
@@ -13,7 +13,7 @@ export async function mapStoresWithDistances(
     throw new Error('Number of distances does not match number of stores.');
   }
 
-  // Adiciona a distância a cada loja
+  // Adiciona a distância a cada store
   const storesWithDistance = stores.map((store, index) => ({
     ...store,
     distance: distances[index] / 1000, // Convert meters to kilometers

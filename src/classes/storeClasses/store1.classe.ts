@@ -1,4 +1,4 @@
-import { DeliveryValue } from './store2.interface';
+import { DeliveryValue } from './store2.class';
 
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -58,13 +58,35 @@ export class Store1 {
   state: string;
 
   @ApiProperty({
-    example: 'Física',
-    description: 'Tipo da stores (exemplo: Física ou Online)',
+    example: 'PDV',
+    description: 'Tipo da stores (exemplo: PDV ou LOJA)',
   })
   type: string;
 
-  @ApiProperty({ example: '01000-000', description: 'CEP da stores' })
+  @ApiProperty({
+    example: 'Brasil',
+    description: 'País onde a stores está localizada',
+    default: 'Brasil',
+  })
+  country: string;
+
+  @ApiProperty({
+    example: '01000000',
+    description: 'CEP da stores no formato 12345678',
+  })
   postalCode: string;
+
+  @ApiProperty({
+    example: '(11) 98765-4321',
+    description: 'Telefone da stores no formato (99) 99999-9999',
+  })
+  telephoneNumber: string;
+
+  @ApiProperty({
+    example: 'exemplo@store.com',
+    description: 'E-mail de contato da stores',
+  })
+  emailAddress: string;
 }
 
 export interface Store1ComDistance extends Store1 {

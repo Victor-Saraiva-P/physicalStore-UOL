@@ -20,7 +20,7 @@ export class DeliveryValue {
   @ApiProperty({
     example: '04014',
     description: 'Código do produto (Aparece apenas para entregas do correio)',
-    required: false
+    required: false,
   })
   codProdutoAgencia?: string;
 }
@@ -55,11 +55,4 @@ export class Store2 {
     description: 'Lista de opções de entrega e seus valores',
   })
   value: DeliveryValue[];
-}
-
-// classe static para entrega de motoboy
-export abstract class MotoboyEntrega {
-  static prazo = 1;
-  static price = 'R$ 15,00';
-  static description = 'Motoboy';
 }

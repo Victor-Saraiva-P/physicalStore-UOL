@@ -3,16 +3,17 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { StoreDocument } from '@schemas/store.schema';
 import { CreateStoreDto } from './dtos/create-store.dto';
-import { getCompleteAddressByZipCode } from '@utils/address.util';
+import { getCompleteAddressByPostalCode } from '@utils/address.util';
 import { mapStoresWithDistances } from '@utils/storesDistanceMapper.util';
 import { calcularPrecoPrazo } from '@apis/correios/precosPrazos.api';
-import { CompleteAdress, Coordinates } from '@interfaces/adress.interface';
+import { CompleteAdress, Coordinates } from '@classes/adress.interface';
 import {
   Response1,
   Response2,
-} from '@storeInterfaces/storeResponses.interface';
-import { Store1ComDistanceValue } from '@storeInterfaces/store1.interface';
-import { Store2, MotoboyEntrega } from '@storeInterfaces/store2.interface';
+} from '@classes/storeClasses/storeResponses.class';
+import { Store1ComDistanceValue } from '@classes/storeClasses/store1.classe';
+import { Store2 } from '@classes/storeClasses/store2.class';
+import {MotoboyEntrega} from '@classes/motoboy-entrega.class';
 import { getCoordinates } from '@apis/google/geocode.api';
 
 @Injectable()
@@ -20,8 +21,7 @@ export class StoreService {
   constructor(@InjectModel('Store') private storeModel: Model<StoreDocument>) {}
 
   async create(createStoreDto: CreateStoreDto): Promise<StoreDocument> {
-    // obter o endereço completo pelo CEP
-    const completeADress: CompleteAdress = await getCompleteAddressByZipCode(
+    const completeADress: CompleteAdress = await getCompleteAddressByPostalCode(
       createStoreDto.postalCode,
     );
 
@@ -44,7 +44,7 @@ export class StoreService {
     }
 
     if (updateStoreDto.postalCode) {
-      const completeAddress = await getCompleteAddressByZipCode(
+      const completeAddress = await getCompleteAddressByPostalCode(
         updateStoreDto.postalCode,
       );
       return this.storeModel.findByIdAndUpdate(
@@ -146,7 +146,7 @@ export class StoreService {
     // Recupera todas as stores do banco
     const allStores = await this.storeModel.find().lean().exec();
 
-    // Adiciona distâncias às stores e aplica os filtros e ordena
+    // Adiciona distâncias as stores e aplica os filtros e ordena
     const storesWithDistances = (
       await mapStoresWithDistances(origin, allStores)
     )
@@ -157,29 +157,31 @@ export class StoreService {
       )
       .sort((a, b) => a.distance - b.distance);
 
-    // Aplica paginação após o cálculo das distâncias (usando o limit para mostrar as stores mais proximas)
+    // Aplica paginação após o cálculo das distâncias
     const paginatedStores = storesWithDistances.slice(offset, offset + limit);
 
-    // Calcula prazos e preços para cada loja paginada
-    const enrichedStores: Store1ComDistanceValue[] = await Promise.all(
+    // Adiciona os prazos e preços para cada store paginada
+    const StoresComPrazoPreco: Store1ComDistanceValue[] = await Promise.all(
       paginatedStores.map((store: Store1ComDistanceValue) =>
-        this.enrichStoreWithDeliveryDetails(store, cep),
+        this.adicionaPrazosPrecoStore(store, cep),
       ),
     );
 
-    // Formata Stores para a Store2 (para encaixar no response da rota)
-    const storeSimplificadaByCep: Store2[] = enrichedStores.map((store) => ({
-      name: store.storeName,
-      city: store.city,
-      postalCode: store.postalCode,
-      type: store.type,
-      distance: store.distance,
-      value: store.value,
-    }));
+    // Formata Stores1 para a Store2 (para encaixar no response da rota)
+    const storeSimplificadaByCep: Store2[] = StoresComPrazoPreco.map(
+      (store) => ({
+        name: store.storeName,
+        city: store.city,
+        postalCode: store.postalCode,
+        type: store.type,
+        distance: store.distance,
+        value: store.value,
+      }),
+    );
 
     return {
       stores: storeSimplificadaByCep,
-      pins: enrichedStores.map((store) => ({
+      pins: StoresComPrazoPreco.map((store) => ({
         position: {
           lat: store.latitude,
           lng: store.longitude,
@@ -193,7 +195,7 @@ export class StoreService {
   }
 
   // Função para calcular prazos e preços
-  private async enrichStoreWithDeliveryDetails(
+  private async adicionaPrazosPrecoStore(
     store: Store1ComDistanceValue,
     cep: string,
   ): Promise<Store1ComDistanceValue> {

@@ -36,7 +36,7 @@ export class CreateStoreDto {
   @IsBoolean({
     message: 'O campo "takeOutInStore" deve ser um valor booleano.',
   })
-  takeOutInStore: boolean;
+  takeOutInStore?: boolean;
 
   @ApiProperty({
     description: 'Tempo estimado de entrega em dias',
@@ -59,7 +59,7 @@ export class CreateStoreDto {
   @Length(0, 255, {
     message: 'O endereço 2 pode ter no máximo 255 caracteres.',
   })
-  address2: string;
+  address2?: string;
 
   @ApiProperty({
     description: 'Outro endereço complementar da stores',
@@ -72,7 +72,7 @@ export class CreateStoreDto {
   @Length(0, 255, {
     message: 'O endereço 3 pode ter no máximo 255 caracteres.',
   })
-  address3: string;
+  address3?: string;
 
   @ApiProperty({
     description: 'Tipo da stores (PDV ou LOJA)',
@@ -109,14 +109,14 @@ export class CreateStoreDto {
   @Matches(/^\(\d{2}\)\s\d{4,5}-\d{4}$/, {
     message: 'O telefone deve estar no formato (99) 99999-9999.',
   })
-  telephoneNumber: string;
+  telephoneNumber?: string;
 
   @ApiProperty({
     description: 'E-mail da stores',
-    example: 'contato@loja.com',
+    example: 'contato@store.com',
     required: false,
   })
   @IsOptional()
   @IsEmail({}, { message: 'O e-mail deve ser válido.' })
-  emailAddress: string;
+  emailAddress?: string;
 }

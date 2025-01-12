@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
-import { GoogleGeocodeResponse } from '@interfaces/google.interface';
-import { BasicAdress, Coordinates } from '@interfaces/adress.interface';
+import { GoogleGeocodeResponse } from '@classes/google.interface';
+import { BasicAdress, Coordinates } from '@classes/adress.interface';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 export const getCoordinates = async (
