@@ -13,7 +13,7 @@ import {
 } from '@classes/storeClasses/storeResponses.class';
 import { Store1ComDistanceValue } from '@classes/storeClasses/store1.classe';
 import { Store2 } from '@classes/storeClasses/store2.class';
-import {MotoboyEntrega} from '@classes/motoboy-entrega.class';
+import { MotoboyEntrega } from '@classes/motoboy-entrega.class';
 import { getCoordinates } from '@apis/google/geocode.api';
 
 @Injectable()

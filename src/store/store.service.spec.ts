@@ -253,8 +253,8 @@ describe('Testes de cep', () => {
     expect(allStores.total).toBe(2);
 
     // Verifica se todas as stores tem o nome da 1, 2 e 3 das criadas no beforeAll
-    expect(allStores.stores[0].name).toBe('PDV 1 - RS');
-    expect(allStores.stores[1].name).toBe('Loja 1 - MA');
+    expect(allStores.stores[0].name).toBe('PDV 1 - MA');
+    expect(allStores.stores[1].name).toBe('Loja 1 - BA');
 
     // verifica se o primeiro a entrega é de motoboy (pois pertence a mesma cidade)
     // E o segundo por ser distante é de correios
@@ -272,8 +272,8 @@ describe('Testes de cep', () => {
     expect(allStores.pins[1].position.lat).toBeDefined();
     expect(allStores.pins[1].position.lng).toBeDefined();
 
-    expect(allStores.pins[0].title).toBe('PDV 1 - RS');
-    expect(allStores.pins[1].title).toBe('Loja 1 - MA');
+    expect(allStores.pins[0].title).toBe('PDV 1 - MA');
+    expect(allStores.pins[1].title).toBe('Loja 1 - BA');
 
     // Verifica se existe a distancia
     expect(allStores.stores[0].distance).toBeDefined();
@@ -281,7 +281,7 @@ describe('Testes de cep', () => {
   });
 
   it('deve retornar apenas a loja por correios', async () => {
-    const allStores = await service.storeByCep('72015922', 100, 0);
+    const allStores = await service.storeByCep('88370340', 100, 0);
 
     // Verifica se todas as stores criadas estão na lista
     expect(allStores.total).toBe(1);
@@ -300,7 +300,7 @@ describe('Testes de cep', () => {
   });
 
   it('deve retornar apenas a loja por motoboy', async () => {
-    const allStores = await service.storeByCep('99052530', 100, 0);
+    const allStores = await service.storeByCep('40436760', 100, 0);
 
     // Verifica se todas as stores criadas estão na lista
     expect(allStores.total).toBe(1);
