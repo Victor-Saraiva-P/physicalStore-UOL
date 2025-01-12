@@ -19,17 +19,6 @@ const storesToTest: CreateStoreDto[] = [
     telephoneNumber: '(11) 91234-5678',
     emailAddress: 'contato@alpha.com',
   },
-  // {
-  //   storeName: 'Loja 2',
-  //   takeOutInStore: true,
-  //   shippingTimeInDays: 5,
-  //   address2: 'Endereço Adicinal 2',
-  //   address3: 'Endereço Adicinal 3',
-  //   type: 'LOJA',
-  //   postalCode: '84033390',
-  //   telephoneNumber: '(21) 98765-4321',
-  //   emailAddress: 'vendas@beta.com',
-  // },
   {
     storeName: 'PDV 1 - MA',
     takeOutInStore: true,
@@ -41,28 +30,6 @@ const storesToTest: CreateStoreDto[] = [
     telephoneNumber: '(31) 99876-5432',
     emailAddress: 'contato@gama.com',
   },
-  // {
-  //   storeName: 'PDV 2',
-  //   takeOutInStore: true,
-  //   shippingTimeInDays: 1,
-  //   address2: 'Endereço Adicinal 2',
-  //   address3: 'Endereço Adicinal 3',
-  //   type: 'PDV',
-  //   postalCode: '85807170',
-  //   telephoneNumber: '(41) 95555-4444',
-  //   emailAddress: 'atendimento@delta.com',
-  // },
-  // {
-  //   storeName: 'Loja que não permite retirada',
-  //   takeOutInStore: false, // Não permite retirada na store
-  //   shippingTimeInDays: 1,
-  //   address2: 'Endereço Adicinal 2',
-  //   address3: 'Endereço Adicinal 3',
-  //   type: 'LOJA',
-  //   postalCode: '63047095',
-  //   telephoneNumber: '(87) 9445-4444',
-  //   emailAddress: 'atendimento@delta.com',
-  // },
 ];
 
 describe('StoreService CRUD', () => {
@@ -75,7 +42,7 @@ describe('StoreService CRUD', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        MongooseModule.forRoot(mongoUri), // Conecta ao MongoDB em memória
+        MongooseModule.forRoot(mongoUri),
         MongooseModule.forFeature([{ name: 'Store', schema: StoreSchema }]),
       ],
       providers: [StoreService],
@@ -101,7 +68,7 @@ describe('StoreService CRUD', () => {
     expect(service).toBeDefined();
   });
 
-  it('should create a new store', async () => {
+  it('Testando create', async () => {
     const newStore: CreateStoreDto = {
       storeName: 'Store de Teste de create',
       takeOutInStore: true,
@@ -136,7 +103,7 @@ describe('StoreService CRUD', () => {
     await service.remove(createdStore.id);
   });
 
-  it('should update an existing store', async () => {
+  it('Testando update', async () => {
     // cria uma store para atualizar os dados
     const newStore: CreateStoreDto = {
       storeName: 'Store de Teste',
@@ -171,7 +138,7 @@ describe('StoreService CRUD', () => {
     await service.remove(updatedStore.id);
   });
 
-  it('should delete an existing store', async () => {
+  it('Testando remove', async () => {
     // cria uma store para atualizar os dados
     const newStore: CreateStoreDto = {
       storeName: 'Store de Teste',
@@ -194,7 +161,7 @@ describe('StoreService CRUD', () => {
     expect(tryFindRemovedStore.total).toBe(0); // A store deletada não deve estar na lista
   });
 
-  it('should list all stores', async () => {
+  it('Testando listar todas as lojas', async () => {
     // Chama o método listAll do serviço
     const allStores = await service.listAll(100, 0);
 
@@ -209,7 +176,7 @@ describe('StoreService CRUD', () => {
     }
   });
 
-  it('should list all stores by id', async () => {
+  it('testando achar uma loja pelo id', async () => {
     // Cria as stores para testar
     const newStore: CreateStoreDto = {
       storeName: 'Store de Teste de storeById',
@@ -234,12 +201,12 @@ describe('StoreService CRUD', () => {
     );
   });
 
-  it('should list all stores by state', async () => {
+  it('testando listar lojas pelo estado', async () => {
     // Chama o método listAllByState do serviço
     const allStores = await service.storeByState('RS', 100, 0);
 
     // Verifica se todas as stores criadas estão na lista
-    expect(allStores.total).toBe(2);
+    expect(allStores.total).toBe(1);
 
     for (const store of allStores.stores) {
       expect(store.state).toBe('RS');
@@ -279,7 +246,7 @@ describe('Testes de cep', () => {
     }
   });
 
-  it('should list all stores by cep', async () => {
+  it('deve retornar as duas stores e suas devidas informações', async () => {
     const allStores = await service.storeByCep('99052530', 100, 0);
 
     // Verifica se todas as stores criadas estão na lista
@@ -298,6 +265,19 @@ describe('Testes de cep', () => {
     expect(allStores.stores[1].value[1].description).toBe(
       'PAC a encomenda economica dos Correios',
     );
+
+    // Verifica se os pins foram criados criados corretamente
+    expect(allStores.pins[0].position.lat).toBeDefined();
+    expect(allStores.pins[0].position.lng).toBeDefined();
+    expect(allStores.pins[1].position.lat).toBeDefined();
+    expect(allStores.pins[1].position.lng).toBeDefined();
+
+    expect(allStores.pins[0].title).toBe('PDV 1 - RS');
+    expect(allStores.pins[1].title).toBe('Loja 1 - MA');
+
+    // Verifica se existe a distancia
+    expect(allStores.stores[0].distance).toBeDefined();
+    expect(allStores.stores[1].distance).toBeDefined();
   });
 
   it('deve retornar apenas a loja por correios', async () => {
