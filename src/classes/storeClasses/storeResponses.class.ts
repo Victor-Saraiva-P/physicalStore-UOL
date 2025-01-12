@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Store1 } from './store1.interface';
-import { Store2 } from './store2.interface';
+import { Store1 } from './store1.classe';
+import { Store2 } from './store2.class';
 import { Store } from '@schemas/store.schema';
 
 export class PinMaps {

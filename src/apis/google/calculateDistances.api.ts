@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
-import { Coordinates } from '@interfaces/adress.interface';
-import { GoogleDistanceResponse } from '@interfaces/google.interface';
+import { Coordinates } from '@classes/adress.interface';
+import { GoogleDistanceResponse } from '@classes/google.interface';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 export async function calculateDistances(

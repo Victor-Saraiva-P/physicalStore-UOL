@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { ViaCepResponse } from '@interfaces/via-cep.interface';
-import { BasicAdress } from '@interfaces/adress.interface';
+import { ViaCepResponse } from '@classes/via-cep.interface';
+import { BasicAdress } from '@classes/adress.interface';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 export const getAdressByPostalCode = async (postalCode: string) => {

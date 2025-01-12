@@ -16,7 +16,7 @@ const config: Config = {
   moduleNameMapper: {
     // Mapeia os aliases definidos no tsconfig.json
     '^@apis/(.*)$': '<rootDir>/apis/$1',
-    '^@interfaces/(.*)$': '<rootDir>/interfaces/$1',
+    '^@types/(.*)$': '<rootDir>/interfaces/$1',
     '^@schemas/(.*)$': '<rootDir>/schemas/$1',
     '^@store/(.*)$': '<rootDir>/store/$1',
     '^@utils/(.*)$': '<rootDir>/utils/$1',

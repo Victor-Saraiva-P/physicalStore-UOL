@@ -14,7 +14,7 @@ import {
   Response2,
   Response1,
   ResponseCrud,
-} from '@storeInterfaces/storeResponses.interface';
+} from '@classes/storeClasses/storeResponses.class';
 import {
   ApiBody,
   ApiOperation,

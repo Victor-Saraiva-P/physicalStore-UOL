@@ -1,8 +1,8 @@
 import { getAdressByPostalCode } from '@apis/viaCep/viaCep.api';
 import { getCoordinates } from '@apis/google/geocode.api';
-import { CompleteAdress, Coordinates } from '@interfaces/adress.interface';
+import { CompleteAdress, Coordinates } from '@classes/adress.interface';
 
-export const getCompleteAddressByZipCode = async (postalCode: string) => {
+export const getCompleteAddressByPostalCode = async (postalCode: string) => {
   // obter os dados de endereço pelo Postal code(CEP)
   const basicAdress = await getAdressByPostalCode(postalCode);
 

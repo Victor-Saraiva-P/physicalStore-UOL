@@ -1,4 +1,4 @@
-import { DeliveryValue } from './store2.interface';
+import { DeliveryValue } from './store2.class';
 
 import { ApiProperty } from '@nestjs/swagger';
 

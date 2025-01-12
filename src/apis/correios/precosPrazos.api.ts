@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { PrecoPrazoResponse } from '@interfaces/correios.interface';
+import { PrecoPrazoResponse } from '@classes/correios.interface';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 export const calcularPrecoPrazo = async (
