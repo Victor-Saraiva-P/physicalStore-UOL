@@ -160,7 +160,7 @@ export class StoreService {
     // Aplica paginação após o cálculo das distâncias (usando o limit para mostrar as stores mais proximas)
     const paginatedStores = storesWithDistances.slice(offset, offset + limit);
 
-    // Calcula prazos e preços para cada loja paginada
+    // Calcula prazos e preços para cada store paginada
     const enrichedStores: Store1ComDistanceValue[] = await Promise.all(
       paginatedStores.map((store: Store1ComDistanceValue) =>
         this.enrichStoreWithDeliveryDetails(store, cep),

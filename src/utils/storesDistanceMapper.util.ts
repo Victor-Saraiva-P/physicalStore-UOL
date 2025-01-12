@@ -13,7 +13,7 @@ export async function mapStoresWithDistances(
     throw new Error('Number of distances does not match number of stores.');
   }
 
-  // Adiciona a distância a cada loja
+  // Adiciona a distância a cada store
   const storesWithDistance = stores.map((store, index) => ({
     ...store,
     distance: distances[index] / 1000, // Convert meters to kilometers

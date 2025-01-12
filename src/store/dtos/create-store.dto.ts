@@ -113,7 +113,7 @@ export class CreateStoreDto {
 
   @ApiProperty({
     description: 'E-mail da stores',
-    example: 'contato@loja.com',
+    example: 'contato@store.com',
     required: false,
   })
   @IsOptional()

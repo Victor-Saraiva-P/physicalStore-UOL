@@ -60,6 +60,6 @@ export class ResponseCrud {
   })
   message: string;
 
-  @ApiProperty({ description: 'Detalhes da loja criada' })
+  @ApiProperty({ description: 'Detalhes da store criada' })
   store: Store;
 }
