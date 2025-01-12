@@ -6,68 +6,68 @@ import { StoreSchema } from '@schemas/store.schema';
 import mongoose from 'mongoose';
 import { CreateStoreDto } from './dtos/create-store.dto';
 
-describe('StoreService', () => {
+// Stores para testar
+const storesToTest: CreateStoreDto[] = [
+  {
+    storeName: 'Loja 1 - BA',
+    takeOutInStore: true,
+    shippingTimeInDays: 2,
+    address2: 'Endereço Adicinal 2',
+    address3: 'Endereço Adicinal 3',
+    type: 'LOJA',
+    postalCode: '41338250',
+    telephoneNumber: '(11) 91234-5678',
+    emailAddress: 'contato@alpha.com',
+  },
+  // {
+  //   storeName: 'Loja 2',
+  //   takeOutInStore: true,
+  //   shippingTimeInDays: 5,
+  //   address2: 'Endereço Adicinal 2',
+  //   address3: 'Endereço Adicinal 3',
+  //   type: 'LOJA',
+  //   postalCode: '84033390',
+  //   telephoneNumber: '(21) 98765-4321',
+  //   emailAddress: 'vendas@beta.com',
+  // },
+  {
+    storeName: 'PDV 1 - MA',
+    takeOutInStore: true,
+    shippingTimeInDays: 3,
+    address2: 'Endereço Adicinal 2',
+    address3: 'Endereço Adicinal 3',
+    type: 'PDV',
+    postalCode: '99034310',
+    telephoneNumber: '(31) 99876-5432',
+    emailAddress: 'contato@gama.com',
+  },
+  // {
+  //   storeName: 'PDV 2',
+  //   takeOutInStore: true,
+  //   shippingTimeInDays: 1,
+  //   address2: 'Endereço Adicinal 2',
+  //   address3: 'Endereço Adicinal 3',
+  //   type: 'PDV',
+  //   postalCode: '85807170',
+  //   telephoneNumber: '(41) 95555-4444',
+  //   emailAddress: 'atendimento@delta.com',
+  // },
+  // {
+  //   storeName: 'Loja que não permite retirada',
+  //   takeOutInStore: false, // Não permite retirada na store
+  //   shippingTimeInDays: 1,
+  //   address2: 'Endereço Adicinal 2',
+  //   address3: 'Endereço Adicinal 3',
+  //   type: 'LOJA',
+  //   postalCode: '63047095',
+  //   telephoneNumber: '(87) 9445-4444',
+  //   emailAddress: 'atendimento@delta.com',
+  // },
+];
+
+describe('StoreService CRUD', () => {
   let service: StoreService;
   let mongoServer: MongoMemoryServer;
-
-  // Stores para testar
-  const storesToTest: CreateStoreDto[] = [
-    {
-      storeName: 'Loja 1',
-      takeOutInStore: true,
-      shippingTimeInDays: 2,
-      address2: 'Endereço Adicinal 2',
-      address3: 'Endereço Adicinal 3',
-      type: 'LOJA',
-      postalCode: '89860970',
-      telephoneNumber: '(11) 91234-5678',
-      emailAddress: 'contato@alpha.com',
-    },
-    {
-      storeName: 'Loja 2',
-      takeOutInStore: true,
-      shippingTimeInDays: 5,
-      address2: 'Endereço Adicinal 2',
-      address3: 'Endereço Adicinal 3',
-      type: 'LOJA',
-      postalCode: '84033390',
-      telephoneNumber: '(21) 98765-4321',
-      emailAddress: 'vendas@beta.com',
-    },
-    {
-      storeName: 'PDV 1',
-      takeOutInStore: true,
-      shippingTimeInDays: 3,
-      address2: 'Endereço Adicinal 2',
-      address3: 'Endereço Adicinal 3',
-      type: 'PDV',
-      postalCode: '29945300',
-      telephoneNumber: '(31) 99876-5432',
-      emailAddress: 'contato@gama.com',
-    },
-    {
-      storeName: 'PDV 2',
-      takeOutInStore: true,
-      shippingTimeInDays: 1,
-      address2: 'Endereço Adicinal 2',
-      address3: 'Endereço Adicinal 3',
-      type: 'PDV',
-      postalCode: '85807170',
-      telephoneNumber: '(41) 95555-4444',
-      emailAddress: 'atendimento@delta.com',
-    },
-    {
-      storeName: 'Loja que não permite retirada',
-      takeOutInStore: false, // Não permite retirada na loja
-      shippingTimeInDays: 1,
-      address2: 'Endereço Adicinal 2',
-      address3: 'Endereço Adicinal 3',
-      type: 'LOJA',
-      postalCode: '63047095',
-      telephoneNumber: '(87) 9445-4444',
-      emailAddress: 'atendimento@delta.com',
-    },
-  ];
 
   beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
@@ -90,7 +90,7 @@ describe('StoreService', () => {
     await mongoServer.stop();
   });
 
-  // Cria as store antes dos testes
+  // Cria Stores para testar
   beforeAll(async () => {
     for (const store of storesToTest) {
       await service.create(store);
@@ -103,7 +103,7 @@ describe('StoreService', () => {
 
   it('should create a new store', async () => {
     const newStore: CreateStoreDto = {
-      storeName: 'Store de Teste',
+      storeName: 'Store de Teste de create',
       takeOutInStore: true,
       shippingTimeInDays: 3,
       address2: 'Endereço Adicinal 2',
@@ -111,7 +111,7 @@ describe('StoreService', () => {
       type: 'LOJA',
       postalCode: '93534230',
       telephoneNumber: '(11) 91234-5678',
-      emailAddress: 'teste@loja.com',
+      emailAddress: 'teste@store.com',
     };
 
     // Chama o método create do serviço
@@ -127,20 +127,24 @@ describe('StoreService', () => {
     expect(createdStore.latitude).toBeDefined();
     expect(createdStore.longitude).toBeDefined();
 
-    // Verifica se a loja foi salva no banco
+    // Verifica se a store foi salva no banco
     const savedStore = await service.storeById(createdStore.id, 100, 0);
-    expect(savedStore).toBeDefined(); // Verifica a loja criada no teste
+    expect(savedStore.stores[0].storeName).toBe(createdStore.storeName);
+    expect(savedStore.stores[0].postalCode).toBe(createdStore.postalCode);
+
+    // exclui a store recém criada
+    await service.remove(createdStore.id);
   });
 
   it('should update an existing store', async () => {
-    // cria uma loja para atualizar os dados
+    // cria uma store para atualizar os dados
     const newStore: CreateStoreDto = {
       storeName: 'Store de Teste',
       shippingTimeInDays: 3,
       type: 'LOJA',
       postalCode: '93534230',
     };
-    // Salva nova loja
+    // Salva nova store
     const storeToUpdate = await service.create(newStore);
 
     // Dados para atualização
@@ -162,31 +166,170 @@ describe('StoreService', () => {
     // Verifica se as coordenadas foram atualizadas e é diferente das coordenadas originais
     expect(updatedStore.latitude).not.toBe(storeToUpdate.latitude);
     expect(updatedStore.longitude).not.toBe(storeToUpdate.longitude);
+
+    // exclui a store recém criada
+    await service.remove(updatedStore.id);
   });
 
   it('should delete an existing store', async () => {
-    // cria uma loja para atualizar os dados
+    // cria uma store para atualizar os dados
     const newStore: CreateStoreDto = {
       storeName: 'Store de Teste',
       shippingTimeInDays: 3,
       type: 'LOJA',
       postalCode: '93534230',
     };
-    // Salva nova loja
+    // Salva nova store
     const storeToDelete = await service.create(newStore);
 
     // Chama o método delete do serviço
     await service.remove(storeToDelete.id);
 
-    // Verifica se a loja foi realmente deletada
+    // Verifica se a store foi realmente deletada
     const tryFindRemovedStore = await service.storeById(
       storeToDelete.id,
       100,
       0,
     );
-    expect(tryFindRemovedStore.total).toBe(0); // A loja deletada não deve estar na lista
+    expect(tryFindRemovedStore.total).toBe(0); // A store deletada não deve estar na lista
+  });
+
+  it('should list all stores', async () => {
+    // Chama o método listAll do serviço
+    const allStores = await service.listAll(100, 0);
+
+    // Verifica se todas as stores criadas estão na lista
+    expect(allStores.total).toBe(storesToTest.length);
+
+    for (const store of storesToTest) {
+      const foundStore = allStores.stores.find(
+        (s) => s.storeName === store.storeName,
+      );
+      expect(foundStore).toBeDefined();
+    }
+  });
+
+  it('should list all stores by id', async () => {
+    // Cria as stores para testar
+    const newStore: CreateStoreDto = {
+      storeName: 'Store de Teste de storeById',
+      takeOutInStore: true,
+      shippingTimeInDays: 3,
+      address2: 'Endereço Adicinal 2',
+      address3: 'Endereço Adicinal 3',
+      type: 'LOJA',
+      postalCode: '68906834',
+      telephoneNumber: '(11) 91234-5678',
+      emailAddress: 'teste@store.com',
+    };
+    const storeToFind = await service.create(newStore);
+
+    // Chama o método listAllById do serviço
+    const foundedStore = await service.storeById(storeToFind.id, 100, 0);
+
+    // Verifica se todas as stores criadas estão na lista
+    expect(foundedStore.total).toBe(1);
+    expect(foundedStore.stores[0].storeName).toBe(
+      'Store de Teste de storeById',
+    );
+  });
+
+  it('should list all stores by state', async () => {
+    // Chama o método listAllByState do serviço
+    const allStores = await service.storeByState('RS', 100, 0);
+
+    // Verifica se todas as stores criadas estão na lista
+    expect(allStores.total).toBe(2);
+
+    for (const store of allStores.stores) {
+      expect(store.state).toBe('RS');
+    }
   });
 });
 
-describe('Testes unitários obrigatórios', () => {
+describe('Testes de cep', () => {
+  let service: StoreService;
+  let mongoServer: MongoMemoryServer;
+
+  beforeAll(async () => {
+    mongoServer = await MongoMemoryServer.create();
+    const mongoUri = mongoServer.getUri();
+
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        MongooseModule.forRoot(mongoUri), // Conecta ao MongoDB em memória
+        MongooseModule.forFeature([{ name: 'Store', schema: StoreSchema }]),
+      ],
+      providers: [StoreService],
+    }).compile();
+
+    service = module.get<StoreService>(StoreService);
+  });
+
+  afterAll(async () => {
+    // Fecha a conexão e o servidor do MongoDB em memoria
+    await mongoose.connection.close();
+    await mongoServer.stop();
+  });
+
+  // Cria Stores para testar
+  beforeAll(async () => {
+    for (const store of storesToTest) {
+      await service.create(store);
+    }
+  });
+
+  it('should list all stores by cep', async () => {
+    const allStores = await service.storeByCep('99052530', 100, 0);
+
+    // Verifica se todas as stores criadas estão na lista
+    expect(allStores.total).toBe(2);
+
+    // Verifica se todas as stores tem o nome da 1, 2 e 3 das criadas no beforeAll
+    expect(allStores.stores[0].name).toBe('PDV 1 - RS');
+    expect(allStores.stores[1].name).toBe('Loja 1 - MA');
+
+    // verifica se o primeiro a entrega é de motoboy (pois pertence a mesma cidade)
+    // E o segundo por ser distante é de correios
+    expect(allStores.stores[0].value[0].description).toBe('Motoboy');
+    expect(allStores.stores[1].value[0].description).toBe(
+      'Sedex a encomenda expressa dos Correios',
+    );
+    expect(allStores.stores[1].value[1].description).toBe(
+      'PAC a encomenda economica dos Correios',
+    );
+  });
+
+  it('deve retornar apenas a loja por correios', async () => {
+    const allStores = await service.storeByCep('72015922', 100, 0);
+
+    // Verifica se todas as stores criadas estão na lista
+    expect(allStores.total).toBe(1);
+
+    // Verifica se todas as stores tem o nome da 1, 2 e 3 das criadas no beforeAll
+    expect(allStores.stores[0].name).toBe('Loja 1 - BA');
+    expect(allStores.stores[0].type).toBe('LOJA');
+
+    // Verifica se por ser distante é de correios
+    expect(allStores.stores[0].value[0].description).toBe(
+      'Sedex a encomenda expressa dos Correios',
+    );
+    expect(allStores.stores[0].value[1].description).toBe(
+      'PAC a encomenda economica dos Correios',
+    );
+  });
+
+  it('deve retornar apenas a loja por motoboy', async () => {
+    const allStores = await service.storeByCep('99052530', 100, 0);
+
+    // Verifica se todas as stores criadas estão na lista
+    expect(allStores.total).toBe(1);
+
+    // Verifica se todas as stores tem o nome da 1, 2 e 3 das criadas no beforeAll
+    expect(allStores.stores[0].name).toBe('Loja 1 - BA');
+    expect(allStores.stores[0].type).toBe('LOJA');
+
+    // Verifica se por ser distante é de correios
+    expect(allStores.stores[0].value[0].description).toBe('Motoboy');
+  });
 });
