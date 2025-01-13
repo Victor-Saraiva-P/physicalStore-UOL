@@ -21,7 +21,6 @@ const config: Config = {
     '^@store/(.*)$': '<rootDir>/store/$1',
     '^@utils/(.*)$': '<rootDir>/utils/$1',
     '^@validators/(.*)$': '<rootDir>/validators/$1',
-    '^@storeInterfaces/(.*)$': '<rootDir>/interfaces/storeInterfaces/$1',
   },
 };
 

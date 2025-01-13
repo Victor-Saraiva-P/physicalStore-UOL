@@ -20,7 +20,7 @@ const storesToTest: CreateStoreDto[] = [
     emailAddress: 'contato@alpha.com',
   },
   {
-    storeName: 'PDV 1 - MA',
+    storeName: 'PDV 1 - RS',
     takeOutInStore: true,
     shippingTimeInDays: 3,
     address2: 'Endereço Adicinal 2',
@@ -218,13 +218,13 @@ describe('StoreService CRUD', () => {
 
   // TESTES DE CEP
   it('deve retornar as duas stores e suas devidas informações', async () => {
-    const allStores = await service.storeByCep('99052530', 100, 0);
+    const allStores = await service.storeByCep('99052530', 100, 0); // Cep de Passo Fundo, Rio Grande do Sul (RS)
 
     // Verifica se todas as stores criadas estão na lista
     expect(allStores.total).toBe(2);
 
-    // Verifica se todas as stores tem o nome da 1, 2 e 3 das criadas no beforeAll
-    expect(allStores.stores[0].name).toBe('PDV 1 - MA');
+    // Verifica se todas as stores tem o nome da 1, 2 das criadas no beforeAll
+    expect(allStores.stores[0].name).toBe('PDV 1 - RS');
     expect(allStores.stores[1].name).toBe('Loja 1 - BA');
 
     // verifica se o primeiro a entrega é de motoboy (pois pertence a mesma cidade)
@@ -243,7 +243,7 @@ describe('StoreService CRUD', () => {
     expect(allStores.pins[1].position.lat).toBeDefined();
     expect(allStores.pins[1].position.lng).toBeDefined();
 
-    expect(allStores.pins[0].title).toBe('PDV 1 - MA');
+    expect(allStores.pins[0].title).toBe('PDV 1 - RS');
     expect(allStores.pins[1].title).toBe('Loja 1 - BA');
 
     // Verifica se existe a distancia
@@ -252,7 +252,7 @@ describe('StoreService CRUD', () => {
   });
 
   it('deve retornar apenas a loja por correios', async () => {
-    const allStores = await service.storeByCep('88370340', 100, 0);
+    const allStores = await service.storeByCep('88370340', 100, 0); // Cep de Navegantes Santa Catarina (SC)
 
     // Verifica se todas as stores criadas estão na lista
     expect(allStores.total).toBe(1);
@@ -271,7 +271,7 @@ describe('StoreService CRUD', () => {
   });
 
   it('deve retornar apenas a loja por motoboy', async () => {
-    const allStores = await service.storeByCep('40436760', 100, 0);
+    const allStores = await service.storeByCep('41347630', 100, 0); // Cep de salvador bahia (BA)
 
     // Verifica se todas as stores criadas estão na lista
     expect(allStores.total).toBe(1);

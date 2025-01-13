@@ -16,7 +16,6 @@
       "@store/*": ["store/*"],
       "@utils/*": ["utils/*"],
       "@validators/*": ["validators/*"],
-      "@storeInterfaces/*": ["classes/storeInterfaces/*"],
       "@classes/*": ["classes/*"],
     },
     "incremental": true,
