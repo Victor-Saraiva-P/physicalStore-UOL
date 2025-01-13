@@ -199,6 +199,9 @@ describe('StoreService CRUD', () => {
     expect(foundedStore.stores[0].storeName).toBe(
       'Store de Teste de storeById',
     );
+
+    // Deleta a store criada
+    await service.remove(storeToFind.id);
   });
 
   it('testando listar lojas pelo estado', async () => {
