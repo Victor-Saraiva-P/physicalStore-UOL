@@ -20,7 +20,7 @@ const storesToTest: CreateStoreDto[] = [
     emailAddress: 'contato@alpha.com',
   },
   {
-    storeName: 'PDV 1 - MA',
+    storeName: 'PDV 1 - RS',
     takeOutInStore: true,
     shippingTimeInDays: 3,
     address2: 'Endereço Adicinal 2',
@@ -199,6 +199,9 @@ describe('StoreService CRUD', () => {
     expect(foundedStore.stores[0].storeName).toBe(
       'Store de Teste de storeById',
     );
+
+    // Deleta a store criada
+    await service.remove(storeToFind.id);
   });
 
   it('testando listar lojas pelo estado', async () => {
@@ -212,49 +215,17 @@ describe('StoreService CRUD', () => {
       expect(store.state).toBe('RS');
     }
   });
-});
 
-describe('Testes de cep', () => {
-  let service: StoreService;
-  let mongoServer: MongoMemoryServer;
-
-  beforeAll(async () => {
-    mongoServer = await MongoMemoryServer.create();
-    const mongoUri = mongoServer.getUri();
-
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        MongooseModule.forRoot(mongoUri), // Conecta ao MongoDB em memória
-        MongooseModule.forFeature([{ name: 'Store', schema: StoreSchema }]),
-      ],
-      providers: [StoreService],
-    }).compile();
-
-    service = module.get<StoreService>(StoreService);
-  });
-
-  afterAll(async () => {
-    // Fecha a conexão e o servidor do MongoDB em memoria
-    await mongoose.connection.close();
-    await mongoServer.stop();
-  });
-
-  // Cria Stores para testar
-  beforeAll(async () => {
-    for (const store of storesToTest) {
-      await service.create(store);
-    }
-  });
-
+  // TESTES DE CEP
   it('deve retornar as duas stores e suas devidas informações', async () => {
-    const allStores = await service.storeByCep('99052530', 100, 0);
+    const allStores = await service.storeByCep('99052530', 100, 0); // Cep de Passo Fundo, Rio Grande do Sul (RS)
 
     // Verifica se todas as stores criadas estão na lista
     expect(allStores.total).toBe(2);
 
-    // Verifica se todas as stores tem o nome da 1, 2 e 3 das criadas no beforeAll
+    // Verifica se todas as stores tem o nome da 1, 2 das criadas no beforeAll
     expect(allStores.stores[0].name).toBe('PDV 1 - RS');
-    expect(allStores.stores[1].name).toBe('Loja 1 - MA');
+    expect(allStores.stores[1].name).toBe('Loja 1 - BA');
 
     // verifica se o primeiro a entrega é de motoboy (pois pertence a mesma cidade)
     // E o segundo por ser distante é de correios
@@ -273,7 +244,7 @@ describe('Testes de cep', () => {
     expect(allStores.pins[1].position.lng).toBeDefined();
 
     expect(allStores.pins[0].title).toBe('PDV 1 - RS');
-    expect(allStores.pins[1].title).toBe('Loja 1 - MA');
+    expect(allStores.pins[1].title).toBe('Loja 1 - BA');
 
     // Verifica se existe a distancia
     expect(allStores.stores[0].distance).toBeDefined();
@@ -281,7 +252,7 @@ describe('Testes de cep', () => {
   });
 
   it('deve retornar apenas a loja por correios', async () => {
-    const allStores = await service.storeByCep('72015922', 100, 0);
+    const allStores = await service.storeByCep('88370340', 100, 0); // Cep de Navegantes Santa Catarina (SC)
 
     // Verifica se todas as stores criadas estão na lista
     expect(allStores.total).toBe(1);
@@ -300,7 +271,7 @@ describe('Testes de cep', () => {
   });
 
   it('deve retornar apenas a loja por motoboy', async () => {
-    const allStores = await service.storeByCep('99052530', 100, 0);
+    const allStores = await service.storeByCep('41347630', 100, 0); // Cep de salvador bahia (BA)
 
     // Verifica se todas as stores criadas estão na lista
     expect(allStores.total).toBe(1);

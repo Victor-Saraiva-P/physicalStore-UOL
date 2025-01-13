@@ -16,7 +16,7 @@ async function bootstrap() {
     .setDescription(
       'Documentação da API para gerenciar stores e calcular distâncias e frete',
     )
-    .setVersion('1.0')
+    .setVersion('1.0.0')
     .addTag('Stores')
     .build();
 

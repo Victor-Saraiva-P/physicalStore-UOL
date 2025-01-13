@@ -10,10 +10,10 @@ import { CompleteAdress, Coordinates } from '@classes/adress.interface';
 import {
   Response1,
   Response2,
-} from '@classes/storeClasses/storeResponses.class';
-import { Store1ComDistanceValue } from '@classes/storeClasses/store1.classe';
-import { Store2 } from '@classes/storeClasses/store2.class';
-import {MotoboyEntrega} from '@classes/motoboy-entrega.class';
+} from '@classes/storesClasses/storeResponses.class';
+import { Store1ComDistanceValue } from '@classes/storesClasses/store1.classe';
+import { Store2 } from '@classes/storesClasses/store2.class';
+import { MotoboyEntrega } from '@classes/motoboy-entrega.class';
 import { getCoordinates } from '@apis/google/geocode.api';
 
 @Injectable()
@@ -141,7 +141,7 @@ export class StoreService {
     offset: number,
   ): Promise<Response2> {
     // Obtém as coordenadas do CEP informado
-    const origin: Coordinates = await getCoordinates(cep);
+    const origin: Coordinates = await getCompleteAddressByPostalCode(cep);
 
     // Recupera todas as stores do banco
     const allStores = await this.storeModel.find().lean().exec();
