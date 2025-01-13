@@ -212,40 +212,8 @@ describe('StoreService CRUD', () => {
       expect(store.state).toBe('RS');
     }
   });
-});
 
-describe('Testes de cep', () => {
-  let service: StoreService;
-  let mongoServer: MongoMemoryServer;
-
-  beforeAll(async () => {
-    mongoServer = await MongoMemoryServer.create();
-    const mongoUri = mongoServer.getUri();
-
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        MongooseModule.forRoot(mongoUri), // Conecta ao MongoDB em memória
-        MongooseModule.forFeature([{ name: 'Store', schema: StoreSchema }]),
-      ],
-      providers: [StoreService],
-    }).compile();
-
-    service = module.get<StoreService>(StoreService);
-  });
-
-  afterAll(async () => {
-    // Fecha a conexão e o servidor do MongoDB em memoria
-    await mongoose.connection.close();
-    await mongoServer.stop();
-  });
-
-  // Cria Stores para testar
-  beforeAll(async () => {
-    for (const store of storesToTest) {
-      await service.create(store);
-    }
-  });
-
+  // TESTES DE CEP
   it('deve retornar as duas stores e suas devidas informações', async () => {
     const allStores = await service.storeByCep('99052530', 100, 0);
 
