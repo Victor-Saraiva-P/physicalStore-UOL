@@ -1,99 +1,150 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
+![Jest](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white)
+# Physical Store API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API completa para gerenciamento de lojas físicas e cálculo inteligente de entregas. Este serviço permite cadastrar estabelecimentos, encontrar lojas próximas por CEP, calcular distâncias entre o cliente e as lojas disponíveis, e fornecer opções otimizadas de entrega.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+A API determina automaticamente o melhor método de envio - usando serviço de motoboy para curtas distâncias (até 50km) e serviços dos Correios (PAC/SEDEX) para distâncias maiores, sempre calculando prazos e custos para cada opção.
+## Funcionalidades Principais
+### Gerenciamento de Estabelecimentos
+- **Cadastro de Lojas:** Criação de novas lojas com validação detalhada de dados, incluindo nome, endereço, CEP, tipos de loja (PDV ou LOJA) e informações de contato.
+- **Busca Avançada:** Consulta de estabelecimentos por ID, estado ou região para fácil administração.
+- **Geocodificação Automática:** Conversão de endereços em coordenadas geográficas para localização precisa de cada estabelecimento.
 
-## Description
+### Cálculo Inteligente de Entregas
+- **Localização por CEP:** Identificação de lojas próximas ao CEP informado pelo cliente.
+- **Cálculo de Distâncias:** Utilização da API do Google Maps para determinar com precisão a distância entre o cliente e cada loja disponível.
+- Seleção Inteligente de Método de Entrega
+- Entrega por motoboy para distâncias até 50km
+- Entrega pelos Correios (PAC/SEDEX) para distâncias maiores
+- Cálculo automático de prazos e custos para cada opção
+## Stack utilizada
+- ### Backend
+    - NestJS
+    - TypeScript
+    - MongoDB
+    - Mongoose
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- ### Testes e Qualidade
+    - Jest
+    - Supertest
+    - ESLint/Prettier
 
-## Project setup
+- ### Integrações
+    - Axios
+    - Google Maps API
+    - ViaCEP API
+## Como Executar o Projeto
 
+### Pré-requisitos
+
+Certifique-se de ter os seguintes itens instalados na sua máquina:
+
+- Node.js (versão 16 ou superior)  
+- npm ou yarn  
+- MongoDB (caso não use Docker)  
+- Git
+
+---
+
+### Passos para Execução
+
+#### 1. Clone o repositório
 ```bash
-$ npm install
+git clone https://github.com/Victor-Saraiva-P/physicalStore-UOL
+cd physicalStore-UOL
 ```
 
-## Compile and run the project
-
+#### 2. Instale as dependências
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
+#### 3. Configure as variáveis de ambiente
+Crie um arquivo `.env` na raiz do projeto com base no `.env.example`:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+cp .env.example .env
 ```
 
-## Deployment
+Edite o `.env` com suas configurações personalizadas.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+---
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 5. Executando localmente (sem Docker)
+
+1. Inicie o MongoDB localmente ou utilize o atlas MongoDB 
+2. Execute a aplicação em modo de desenvolvimento:
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+npm run start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+### 6. Executando testes
+```bash
+npm run test
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+---
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## Acessando a Aplicação
 
-## Support
+- API: http://localhost:3000/api  
+- Documentação Swagger: http://localhost:3000/api/docs
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+### Endpoints principais
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- GET /stores: Lista todas as lojas  
+- GET /stores/:id: Busca uma loja por ID  
+- POST /stores: Cadastra uma nova loja  
+- GET /stores/nearby/:cep: Encontra lojas próximas a um CEP  
+- GET /delivery-options/:cep: Calcula opções de entrega para um CEP
 
-## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## Aprendizados
+
+Neste projeto, adquiri e aprimorei habilidades essenciais no desenvolvimento backend moderno utilizando NestJS, MongoDB e integrações externas:
+
+### NestJS
+- Arquitetura modular e desacoplada
+- Controllers, providers e injeção de dependências via decorators
+- Middlewares para validação e transformação de dados
+
+### MongoDB e Mongoose
+- Modelagem NoSQL com schemas validados
+- Índices geoespaciais para consultas por proximidade
+- Operações CRUD eficientes
+
+### Integrações Externas
+- Consumo de APIs (Google Maps, ViaCEP, Correios)
+- Tratamento de erros e geocodificação de endereços
+- Cálculo de rotas e distâncias
+
+### Testes e Qualidade de Código
+- Testes unitários e de integração com Jest
+- Uso do MongoDB Memory Server para isolamento em testes
+- Mocks de serviços externos
+- Aplicação de princípios de clean code
+
+### Algoritmos de Otimização
+- Seleção inteligente do método ideal de entrega
+- Cálculo de custo baseado em distância e tipo de serviço
+- Ordenação dos resultados por proximidade
+
+### Documentação e Padrões de API
+- Documentação interativa com Swagger/OpenAPI
+- Uso de DTOs para validação
+- Respostas padronizadas com HTTP status codes adequados
+
+Este projeto consolidou meus conhecimentos teóricos, aplicando-os a um contexto prático de negócios e resultando em uma solução robusta e escalável.
+
+## 👨‍💻 Autor
+
+Desenvolvido por **[Victor Saraiva](https://github.com/Victor-Saraiva-P)**
